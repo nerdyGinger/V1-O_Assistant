@@ -1,7 +1,9 @@
 """
 Program: weatherTest.py
-Author: yahoo/Morgan
-Gets current weather data for Sioux Falls and prints time/temp/condition.
+Author: yahoo/nerdyGinger
+Serves as the webhook central for V1-O; functionality right now includes
+getting the current weather conditions for Sioux Falls and telling the
+time--although for some reason dialogflow sets it 5 hours ahead! (grr...)
 """
 
 import urllib, urllib.request, json, datetime
@@ -26,7 +28,9 @@ def processRequest(req):
     if (req.get("result").get("action") == "yahooWeatherForcast"):
         res = weatherAction()
     elif (req.get("result").get("action") == "time.get"):
-        res = timeAction()
+        res = getTimeAction()
+    elif (req.get("result").get("action") == "setTimer"):
+        res = timer()
     else:
         return {}
     return res
@@ -44,7 +48,7 @@ def weatherAction():
         " degrees and " + sub.get("text").lower() + ".")
     return { "speech": text, "displayText": text, "source": "yahooWeather" }
 
-def timeAction():
+def getTimeAction():
     tz = pytz.timezone("America/Chicago")
     current = datetime.datetime.now()
     current = tz.localize(current)
@@ -52,6 +56,12 @@ def timeAction():
     return ({ "speech": ("It is " + stringTime + "."),
                 "displayText": ("It is " + stringTime + "."),
                 "source": "pytime" })
+
+def timer():
+    # add timer functionality!
+    return { "speech": "Not actually able to do this yet.",
+             "displayText": "Not actually able to do this yet.",
+             "source": "pytimer" }
 
 #-----------------------------------------------------------------------
 def test():
