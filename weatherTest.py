@@ -8,7 +8,9 @@ import urllib, urllib.request, json, datetime
 import json, os
 from flask import Flask, request, make_response
 
+print("Imports went through!")
 app = Flask(__name__)
+print("Flask thing went through!")
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
