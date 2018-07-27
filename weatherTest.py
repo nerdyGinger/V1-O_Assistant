@@ -5,7 +5,7 @@ Gets current weather data for Sioux Falls and prints time/temp/condition.
 """
 
 import urllib, urllib.request, json, datetime
-import json, os
+import json, os, pytz
 from flask import Flask, request, make_response
 
 app = Flask(__name__)
@@ -26,10 +26,7 @@ def processRequest(req):
     if (req.get("result").get("action") == "yahooWeatherForcast"):
         res = weatherAction()
     elif (req.get("result").get("action") == "time.get"):
-        current = datetime.datetime.now().strftime("%I:%M%p")
-        res = { "speech": ("It is " + current + "."),
-                "displayText": ("It is " + current + "."),
-                "source": "pytime" }
+        res = timeAction()
     else:
         return {}
     return res
@@ -47,6 +44,15 @@ def weatherAction():
         " degrees and " + sub.get("text").lower() + ".")
     return { "speech": text, "displayText": text, "source": "yahooWeather" }
 
+def timeAction():
+    tz = pytz.timezone("America/Chicago")
+    current = datetime.datetime.now()
+    current = tz.localize(current)
+    stringTime = current.strftime("%I:%M%p")
+    return ({ "speech": ("It is " + stringTime + "."),
+                "displayText": ("It is " + stringTime + "."),
+                "source": "pytime" })
+
 #-----------------------------------------------------------------------
 def test():
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
@@ -60,6 +66,8 @@ def test():
            datetime.datetime.now().strftime("%I:%M%p") + " is " + 
            sub.get("temp") + " degrees and " + sub.get("text").lower() + ".")
     input()
+
+
 
 #-----------------------------------------------------------------------
 
