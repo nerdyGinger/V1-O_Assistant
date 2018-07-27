@@ -44,8 +44,9 @@ def weatherAction():
     data = json.loads(result)
     container = data['query']['results']
     sub = container.get("channel").get("item").get("condition")
-    text = ("The weather in Sioux Falls is " + sub.get("tem") +
+    text = ("The weather in Sioux Falls is " + sub.get("temp") +
         " degrees and " + sub.get("text").lower() + ".")
+    print({ "speech": text, "displayText": text, "source": "yahooWeather" })
     return { "speech": text, "displayText": text, "source": "yahooWeather" }
 
 #-----------------------------------------------------------------------
@@ -65,8 +66,9 @@ def test():
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
+    weatherAction()
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=False, port = port, host='0.0.0.0')
+    #app.run(debug=False, port = port, host='0.0.0.0')
 
 
 
