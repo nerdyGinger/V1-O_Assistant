@@ -8,9 +8,7 @@ import urllib, urllib.request, json, datetime
 import json, os
 from flask import Flask, request, make_response
 
-print("Imports went through!")
 app = Flask(__name__)
-print("Flask thing went through!")
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
@@ -18,7 +16,7 @@ def webhook():
     req = request.get_json(silent=True, force=True)
     result = processRequest(req)
     print("Request: " + json.dumps(req, indent=4))
-    result = json.dumps(res, indent=4)
+    result = json.dumps(result, indent=4)
     r = make_response(result)
     r.headers['content-Type'] = "application/json"
     print("Returning...")
@@ -46,7 +44,6 @@ def weatherAction():
     sub = container.get("channel").get("item").get("condition")
     text = ("The weather in Sioux Falls is " + sub.get("temp") +
         " degrees and " + sub.get("text").lower() + ".")
-    print({ "speech": text, "displayText": text, "source": "yahooWeather" })
     return { "speech": text, "displayText": text, "source": "yahooWeather" }
 
 #-----------------------------------------------------------------------
