@@ -27,7 +27,9 @@ def processRequest(req):
         res = weatherAction()
     elif (req.get("result").get("action") == "time.get"):
         current = datetime.datetime.now().strftime("%I:%M%p")
-        res = current
+        res = { "speech": ("It is " + current + "."),
+                "displayText": ("It is " + current + "."),
+                "source": "pytime" }
     else:
         return {}
     return res
