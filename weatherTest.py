@@ -30,7 +30,6 @@ def processRequest(req):
         res = current
     else:
         return {}
-    print("Result: " + res)
     return res
 
 def weatherAction():
