@@ -12,11 +12,14 @@ app = Flask(__name__)
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
+    print("Received hook...")
     req = request.get_json(silent=True, force=True)
     result = processRequest(req)
+    print("Request: " + json.dumps(req, indent=4))
     result = json.dumps(res, indent=4)
     r = make_response(result)
     r.headers['content-Type'] = "application/json"
+    print("Returning...")
     return r
 
 def processRequest(req):
@@ -27,9 +30,11 @@ def processRequest(req):
         res = current
     else:
         return {}
+    print("Result: " + res)
     return res
 
 def weatherAction():
+    print("Weather action called.")
     baseurl = "https://query.yahooapis.com/v1/public/yql?"
     yql_query = "select item.condition from weather.forecast where woeid=12782768"
     yql_url = baseurl + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
