@@ -31,6 +31,8 @@ def processRequest(req):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
         res = timer()
+    elif (req.get("result").get("action") == "wakeup"):
+        res = wakeup()
     else:
         return {}
     return res
@@ -62,6 +64,11 @@ def timer():
     return { "speech": "Not actually able to do this yet.",
              "displayText": "Not actually able to do this yet.",
              "source": "pytimer" }
+
+def wakeup():
+    return { "speech": "The server is already awake.",
+             "displayText": "The server is already awake.",
+             "source": "heroku" }
 
 #-----------------------------------------------------------------------
 def test():
