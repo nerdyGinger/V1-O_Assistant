@@ -31,8 +31,8 @@ def processRequest(req):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
         
-        res = timer(req.get("result").get("parameters").get("amount"),
-                    req.get("result").get("parameters").get("unit"))
+        res = timer(req.get("result").get("parameters").get("duration").get("amount"),
+                    req.get("result").get("parameters").get("duration").get("unit"))
     elif (req.get("result").get("action") == "wakeup"):
         res = wakeup()
     else:
