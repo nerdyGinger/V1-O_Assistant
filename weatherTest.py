@@ -30,12 +30,16 @@ def processRequest(req):
     elif (req.get("result").get("action") == "time.get"):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
-        res = timer()
+        
+        res = timer(req.get("result").get("parameters").get("amount"),
+                    req.get("result").get("parameters").get("unit"))
     elif (req.get("result").get("action") == "wakeup"):
         res = wakeup()
     else:
         return {}
     return res
+
+#--------------------------------------------------------------
 
 def weatherAction():
     print("Weather action called.")
@@ -48,7 +52,9 @@ def weatherAction():
     sub = container.get("channel").get("item").get("condition")
     text = ("The weather in Sioux Falls is " + sub.get("temp") +
         " degrees and " + sub.get("text").lower() + ".")
-    return { "speech": text, "displayText": text, "source": "yahooWeather" }
+    return { "speech": text,
+             "displayText": text,
+             "source": "yahooWeather" }
 
 def getTimeAction():
     tz = pytz.timezone("America/Chicago")
@@ -59,11 +65,10 @@ def getTimeAction():
                 "displayText": ("It is " + stringTime + "."),
                 "source": "pytime" })
 
-def timer():
-    # add timer functionality!
-    return { "speech": "Not actually able to do this yet.",
-             "displayText": "Not actually able to do this yet.",
-             "source": "pytimer" }
+def timer(amount, unit):
+    return { "speech": "Timer set.",
+             "displayText": "Timer set.",
+             "source": ("android;" + str(amount) + ";" + unit) }
 
 def wakeup():
     return { "speech": "The server is already awake.",
@@ -71,20 +76,9 @@ def wakeup():
              "source": "heroku" }
 
 #-----------------------------------------------------------------------
+
 def test():
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = "select item.condition from weather.forecast where woeid=12782768"
-    yql_url = baseurl + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    container = data['query']['results']
-    sub = container.get("channel").get("item").get("condition")
-    print ("Weather in Sioux Falls at "  +
-           datetime.datetime.now().strftime("%I:%M%p") + " is " + 
-           sub.get("temp") + " degrees and " + sub.get("text").lower() + ".")
-    input()
-
-
+    print(timer(10, "min"))
 
 #-----------------------------------------------------------------------
 
