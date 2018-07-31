@@ -2,7 +2,7 @@
 Program: weatherTest.py
 Author: yahoo/nerdyGinger
 Serves as the webhook central for V1-O; functionality right now includes
-getting the current weather conditions for Sioux Falls and telling the
+getting weather conditions, times for sunrise/sunset, and telling the
 time--although for some reason dialogflow sets it 5 hours ahead! (grr...)
 """
 
