@@ -31,6 +31,10 @@ def processRequest(req):
     if (req.get("result").get("action") == "yahooWeatherForcast"):
         res = weatherAction(req.get("result").get("parameters").get("address"),
                             req.get("result").get("parameters").get("date-time"))
+    elif (req.get("result").get("action") == "sunrise"):
+        res =  sunrise()
+    elif (req.get("result").get("action") == "sunset"):
+        res = sunset()
     elif (req.get("result").get("action") == "time.get"):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
