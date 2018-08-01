@@ -2,8 +2,8 @@
 Program: weatherTest.py
 Author: yahoo/nerdyGinger
 Serves as the webhook central for V1-O; functionality right now includes
-getting weather conditions, times for sunrise/sunset, and telling the
-time--although for some reason dialogflow sets it 5 hours ahead! (grr...)
+getting weather forecasts, times for sunrise/sunset, and telling the
+time.
 """
 
 import urllib, urllib.request, json, datetime
@@ -96,10 +96,8 @@ def sunset():
              "source": "yahooWeather" }
 
 def getTimeAction():
-    tz = pytz.timezone("America/Chicago")
-    current = datetime.datetime.now()
-    current = tz.localize(current)
-    stringTime = current.strftime("%I:%M%p")
+    now = datetime.datetime.now(pytz.timezone("US/Central"))
+    stringTime = now.strftime("%I:%M%p")
     return ({ "speech": ("It is " + stringTime + "."),
                 "displayText": ("It is " + stringTime + "."),
                 "source": "pytime" })
@@ -117,28 +115,14 @@ def wakeup():
 #-----------------------------------------------------------------------
 
 def test():
-    city = "London"
-    convDate = "01 Aug 2018"
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = ("select item from weather.forecast where woeid in " +
-        "(select woeid from geo.places(1) where text='" + city + "')")
-    yql_url = baseurl + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    container = data['query']['results']
-    sub = container.get("channel").get("item").get("forecast")
-    forecast = "unknown"
-    for i in sub:
-        if (i.get("date") == convDate):
-            text = ("The forecast in " + city + " on " + convDate + " is " + 
-                    i.get("text") + " with a high of " + i.get("high") + ".")
-            
-    tomorrow = sub[1]
-    print(text)
+    now = datetime.datetime.now(pytz.timezone("US/Central"))
+    stringTime = now.strftime("%I:%M%p")
+    print(stringTime)
 
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
+    #test()
     port = int(os.getenv('PORT', 5000))
     app.run(debug=False, port = port, host='0.0.0.0')
 
