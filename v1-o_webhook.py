@@ -38,10 +38,14 @@ def webhook():
 
 def processRequest(req):
     if (req.get("result").get("action") == "yahooWeatherForcast"):
-        res = weatherAction(req.get("result").get("contexts")[0].get("parameters").get("address"),
-                            req.get("result").get("contexts")[0].get("parameters").get("date-time"))
+        res = weatherAction(
+            req.get("result").get("contexts")[0].get("parameters").get("address"),
+            req.get("result").get("contexts")[0].get("parameters").get("date-time"))
     elif (req.get("result").get("action") == "weatherTemperature"):
-        res = weatherTemperature()
+        res = weatherTemperature(
+            req.get("result").get("contexts")[0].get("parameters").get("address"),
+            req.get("result").get("contexts")[0].get("parameters").get("temperature"),
+            req.get("result").get("contexts")[0].get("parameters").get("date-time"))
     elif (req.get("result").get("action") == "sunrise"):
         res =  sunrise()
     elif (req.get("result").get("action") == "sunset"):
