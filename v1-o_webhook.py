@@ -10,6 +10,9 @@ import urllib, urllib.request, json, datetime
 import json, os, pytz
 from flask import Flask, request, make_response
 
+#--------------------------------------------------------------------
+#--- Global variables ---
+
 BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
 
 MONTHS = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June",
@@ -21,6 +24,9 @@ TEMPS = {"freezing": "-100;10", "cold": "11;32", "chilly": "33;55", "warm": "55;
 TEMPS_COOLER = { "cold": "freezing", "chilly": "cold", "warm": "chilly", "hot": "warm" }
 
 TEMPS_WARMER = { "freezing": "cold", "cold": "chilly", "chilly": "warm", "warm": "hot" }
+
+#--------------------------------------------------------------------------
+#--- Connction functions ---
 
 app = Flask(__name__)
 
@@ -62,6 +68,7 @@ def processRequest(req):
     return res
 
 #--------------------------------------------------------------
+#--- Webhook actions ---
 
 def weatherAction(city, date):
     try:
@@ -71,15 +78,12 @@ def weatherAction(city, date):
         convDate = datetime.datetime.now().strftime("%d %b %Y")
     yql_query = ("select item from weather.forecast where woeid in " +
         "(select woeid from geo.places(1) where text='" + city + "')")
-    yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    container = data['query']['results']
+    container = yahooWeather(yql_query)
     sub = container.get("channel").get("item").get("forecast")
     forecast = "unknown"
     for i in sub:
         if (i.get("date") == convDate):
-            text = ("The forecast in " + city + " on " + convDate + " is " + 
+            text = ("The forecast in " + city + " on " + convDate[:-4] + " is " + 
                     i.get("text") + " with a high of " + i.get("high") + ".")
     return { "speech": text,
              "displayText": text,
@@ -95,24 +99,21 @@ def weatherTemperature(city, temp, date):
             convDate = datetime.datetime.now().strftime("%d %b %Y")
         yql_query = ("select item from weather.forecast where woeid in " +
             "(select woeid from geo.places(1) where text='" + city + "')")
-        yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-        result = urllib.request.urlopen(yql_url).read()
-        data = json.loads(result)
-        container = data['query']['results']
+        container = yahooWeather(yql_query)
         sub = container.get("channel").get("item").get("forecast")
         forecast = "unknown"
         for i in sub:
             if (i.get("date") == convDate):
                 high = int(i.get("high"))
                 if (high >= int(tempRange[0]) and high <= int(tempRange[1])):
-                    text = ("The high on " + convDate + " is supposed to be " + str(high) + 
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " + str(high) + 
                             " degrees, so it should be " + temp + ".")
                 elif (high < int(tempRange[0])):
-                    text = ("The high on " + convDate + " is supposed to be " + sttr(high) +
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " + sttr(high) +
                             " degrees, so it may be rather " + TEMPS_COOLER.get(temp) +
                             ".")
                 else:
-                    text = ("The high on " + convDate + " is supposed to be " + str(high) +
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " + str(high) +
                             " degrees, so it may be rather " + TEMPS_WARMER.get(temp) +
                             ".")
     except:
@@ -123,15 +124,12 @@ def weatherTemperature(city, temp, date):
             convDate = datetime.datetime.now().strftime("%d %b %Y")
         yql_query = ("select item from weather.forecast where woeid in " +
             "(select woeid from geo.places(1) where text='" + city + "')")
-        yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-        result = urllib.request.urlopen(yql_url).read()
-        data = json.loads(result)
-        container = data['query']['results']
+        container = yahooWeather(yql_query)
         sub = container.get("channel").get("item").get("forecast")
         forecast = "unknown"
         for i in sub:
             if (i.get("date") == convDate):
-                text = ("The high on " + convDate + " is supposed to be " +
+                text = ("The high on " + convDate[:-4] + " is supposed to be " +
                         str(i.get("high")) + " degrees.")
     return { "speech": text,
          "displayText": text,
@@ -140,10 +138,7 @@ def weatherTemperature(city, temp, date):
 
 def sunrise():
     yql_query = "select astronomy.sunrise from weather.forecast where woeid=12782768"
-    yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    container = data['query']['results']
+    container = yahooWeather(yql_query)
     sub = container.get("channel").get("astronomy").get("sunrise")
     return { "speech": ("Sunrise today is at " + sub + "."),
              "displayText": ("Sunrise today is at " + sub + "."),
@@ -151,10 +146,7 @@ def sunrise():
 
 def sunset():
     yql_query = "select astronomy.sunset from weather.forecast where woeid=12782768"
-    yql_url = BASE_URL + urllib.parse.urlencode({'q':yql_query}) + "&format=json"
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    container = data['query']['results']
+    container = yahooWeather(yql_query)
     sub = container.get("channel").get("astronomy").get("sunset")
     return { "speech": ("Sunset today is at " + sub + "."),
              "displayText": ("Sunset today is at " + sub + "."),
@@ -178,11 +170,22 @@ def wakeup():
              "source": "heroku" }
 
 #-----------------------------------------------------------------------
+#--- Helper functions ---
+
+def yahooWeather(query):
+    yql_url = BASE_URL = urllib.parse.urlencode({'q':query}) + "&format=json"
+    result = urllib.request.urlopen(yql_url).read()
+    data = json.loads(result)
+    return data['query']['results']
+
+#-----------------------------------------------------------------------
+#--- Test function ---
 
 def test():
     print(weatherTemperature("Sioux Falls", "", "2018-08-04"))
 
 #-----------------------------------------------------------------------
+#--- Run main ---
 
 if __name__ == '__main__':
     #test()
