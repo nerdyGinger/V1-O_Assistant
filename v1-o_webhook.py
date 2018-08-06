@@ -173,7 +173,7 @@ def wakeup():
 #--- Helper functions ---
 
 def yahooWeather(query):
-    yql_url = BASE_URL = urllib.parse.urlencode({'q':query}) + "&format=json"
+    yql_url = BASE_URL + urllib.parse.urlencode({'q':query}) + "&format=json"
     result = urllib.request.urlopen(yql_url).read()
     data = json.loads(result)
     return data['query']['results']
