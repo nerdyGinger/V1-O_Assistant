@@ -25,6 +25,19 @@ TEMPS_COOLER = { "cold": "freezing", "chilly": "cold", "warm": "chilly", "hot": 
 
 TEMPS_WARMER = { "freezing": "cold", "cold": "chilly", "chilly": "warm", "warm": "hot" }
 
+OUTFIT_COLD = [ "jacket", "hat", "turtleneck", "coat", "scarf", "pants", "gloves" ]
+
+OUTFIT_CHILLY = [ "sweatshirt", "hoodie", "cardigan", "long sleeves", "shawls", "jeans" ]
+
+OUTFIT_WARM = [ "t-shirt", "shorts", "tank top", "sandals", "bathing suit", "swim suit",
+                "skirt", "capri", "flip flops" ]
+
+OUTFITS_CONDITIONS = { "umbrella": "rain", "rain jacket": "rain", "rain coat": "rain",
+                       "boots": "snow", "ski pants": "snow", "snow pants": "snow",
+                       "sunglasses": "sun", "sunscreen": "sun" }
+
+OUTFITS_TEMPS = { }
+            
 #--------------------------------------------------------------------------
 #--- Connction functions ---
 
@@ -52,6 +65,11 @@ def processRequest(req):
             req.get("result").get("contexts")[0].get("parameters").get("address"),
             req.get("result").get("contexts")[0].get("parameters").get("temperature"),
             req.get("result").get("contexts")[0].get("parameters").get("date-time"))
+    elif (req.get("result").get("action") == "weatherOutfit"):
+        res = weatherOutfit(
+            req.get("result").get("contexts")[0].get("parameters").get("address"),
+            req.get("result").get("contexts")[0].get("parameters").get("date-time"),
+            req.get("result").get("contexts")[0].get("parameters").get("outfit"))
     elif (req.get("result").get("action") == "sunrise"):
         res =  sunrise()
     elif (req.get("result").get("action") == "sunset"):
@@ -71,11 +89,7 @@ def processRequest(req):
 #--- Webhook actions ---
 
 def weatherAction(city, date):
-    try:
-        splitDate = date.split("-")
-        convDate = splitDate[2] + " " + MONTHS.get(splitDate[1]) + " " + splitDate[0]
-    except:
-        convDate = datetime.datetime.now().strftime("%d %b %Y")
+    convDate = convertDate(date)
     yql_query = ("select item from weather.forecast where woeid in " +
         "(select woeid from geo.places(1) where text='" + city + "')")
     container = yahooWeather(yql_query)
@@ -92,11 +106,7 @@ def weatherAction(city, date):
 def weatherTemperature(city, temp, date):
     try:
         tempRange = TEMPS.get(temp).split(";")
-        try:
-            splitDate = date.split("-")
-            convDate = splitDate[2] + " " + MONTHS.get(splitDate[1]) + " " + splitDate[0]
-        except:
-            convDate = datetime.datetime.now().strftime("%d %b %Y")
+        convDate = convertDate(date)
         yql_query = ("select item from weather.forecast where woeid in " +
             "(select woeid from geo.places(1) where text='" + city + "')")
         container = yahooWeather(yql_query)
@@ -106,22 +116,18 @@ def weatherTemperature(city, temp, date):
             if (i.get("date") == convDate):
                 high = int(i.get("high"))
                 if (high >= int(tempRange[0]) and high <= int(tempRange[1])):
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " + str(high) + 
-                            " degrees, so it should be " + temp + ".")
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                            str(high) + " degrees, so it should be " + temp + ".")
                 elif (high < int(tempRange[0])):
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " + sttr(high) +
-                            " degrees, so it may be rather " + TEMPS_COOLER.get(temp) +
-                            ".")
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                            sttr(high) + " degrees, so it may be rather " +
+                            TEMPS_COOLER.get(temp) + ".")
                 else:
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " + str(high) +
-                            " degrees, so it may be rather " + TEMPS_WARMER.get(temp) +
-                            ".")
+                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                            str(high) + " degrees, so it may be rather " +
+                            TEMPS_WARMER.get(temp) + ".")
     except:
-        try:
-            splitDate = date.split("-")
-            convDate = splitDate[2] + " " + MONTHS.get(splitDate[1]) + " " + splitDate[0]
-        except:
-            convDate = datetime.datetime.now().strftime("%d %b %Y")
+        convDate = convertDate(date)
         yql_query = ("select item from weather.forecast where woeid in " +
             "(select woeid from geo.places(1) where text='" + city + "')")
         container = yahooWeather(yql_query)
@@ -134,6 +140,12 @@ def weatherTemperature(city, temp, date):
     return { "speech": text,
          "displayText": text,
          "source": "yahooWeather" }
+
+def weatherOutfit(city, date, outfit):
+    convDate = convertDate(date)
+    return { "speech": "This functionality is still in development. My apologies.",
+             "displayText": "This functionality is still in development. My apologies.",
+             "source": "yahooWeather" }
 
 
 def sunrise():
@@ -177,6 +189,15 @@ def yahooWeather(query):
     result = urllib.request.urlopen(yql_url).read()
     data = json.loads(result)
     return data['query']['results']
+
+def convertDate(agentDate):
+    try:
+        splitDate = agentDate.split("-")
+        convDate = splitDate[2] + " " + MONTHS.get(splitDate[1]) + " " + splitDate[0]
+    except:
+        now = datetime.datetime.now(pytz.timezone("US/Central"))
+        convDate = now.strftime("%d %b %Y")
+    return convDate
 
 #-----------------------------------------------------------------------
 #--- Test function ---
