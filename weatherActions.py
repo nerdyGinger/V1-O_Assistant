@@ -5,7 +5,8 @@ Off-loads weather functions from the main webhook.
 Contains:
 basic weather, temperature, weather/outfit, sunrise, and sunset actions.
 """
-import pytz, datetime, v1o_webhook 
+import pytz, datetime, v1o_webhook
+from constants import *
 
 def weatherAction(city, date):
     convDate = v1o_webhook.convertDate(date)
@@ -24,7 +25,7 @@ def weatherAction(city, date):
 
 def weatherTemperature(city, temp, date):
     try:
-        tempRange = v1o_webhook.TEMPS.get(temp).split(";")
+        tempRange = TEMPS.get(temp).split(";")
         convDate = v1o_webhook.convertDate(date)
         yql_query = ("select item from weather.forecast where woeid in " +
             "(select woeid from geo.places(1) where text='" + city + "')")
@@ -62,15 +63,15 @@ def weatherTemperature(city, temp, date):
 
 def weatherOutfit(city, date, outfit):
     convDate = v1o_webhook.convertDate(date)
-    if outfit in v1o_webhook.OUTFIT_COLD:
+    if outfit in OUTFIT_COLD:
         return weatherTemperature(city, "cold", date)
-    elif (outfit in v1o_webhook.OUTFIT_CHILLY):
+    elif (outfit in OUTFIT_CHILLY):
         return weatherTemperature(city, "chilly", date)
-    elif outfit in v1o_webhook.OUTFIT_WARM:
+    elif outfit in OUTFIT_WARM:
         return weatherTemperature(city, "warm", date)
-    elif (outfit in v1o_webhook.OUTFIT_CONDITIONS.keys()):
-        conditions = v1o_webhook.CONDITIONS.get(
-                     v1o_webhook.OUTFIT_CONDITIONS.get(outfit)).split(";")
+    elif (outfit in OUTFIT_CONDITIONS.keys()):
+        conditions = CONDITIONS.get(
+                     OUTFIT_CONDITIONS.get(outfit)).split(";")
         yql_query = ("select item from weather.forecast where woeid in " +
                      "(select woeid from geo.places(1) where text='" + city + "')")
         container = v1o_webhook.yahooWeather(yql_query)
