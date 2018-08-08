@@ -1,5 +1,5 @@
 """
-Program: weatherTest.py
+Program: v1o_webhook.py
 Author: yahoo/nerdyGinger
 Serves as the webhook central for V1-O; functionality right now includes
 getting weather forecasts, times for sunrise/sunset, and telling the
@@ -7,7 +7,7 @@ time.
 """
 
 import urllib, urllib.request, json, datetime
-import json, os, pytz
+import json, os, pytz, weatherActions
 from flask import Flask, request, make_response
 
 #--------------------------------------------------------------------
@@ -64,23 +64,23 @@ def webhook():
 
 def processRequest(req):
     if (req.get("result").get("action") == "yahooWeatherForcast"):
-        res = weatherAction(
+        res = weatherActions.weatherAction(
             req.get("result").get("contexts")[0].get("parameters").get("address"),
             req.get("result").get("contexts")[0].get("parameters").get("date-time"))
     elif (req.get("result").get("action") == "weatherTemperature"):
-        res = weatherTemperature(
+        res = weatherActions.weatherTemperature(
             req.get("result").get("contexts")[0].get("parameters").get("address"),
             req.get("result").get("contexts")[0].get("parameters").get("temperature"),
             req.get("result").get("contexts")[0].get("parameters").get("date-time"))
     elif (req.get("result").get("action") == "weatherOutfit"):
-        res = weatherOutfit(
+        res = weatherActions.weatherOutfit(
             req.get("result").get("contexts")[0].get("parameters").get("address"),
             req.get("result").get("contexts")[0].get("parameters").get("date-time"),
             req.get("result").get("contexts")[0].get("parameters").get("outfit"))
     elif (req.get("result").get("action") == "sunrise"):
-        res =  sunrise()
+        res =  weatherActions.sunrise()
     elif (req.get("result").get("action") == "sunset"):
-        res = sunset()
+        res = weatherActions.sunset()
     elif (req.get("result").get("action") == "time.get"):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
@@ -94,7 +94,7 @@ def processRequest(req):
 
 #--------------------------------------------------------------
 #--- Webhook actions ---
-
+"""
 def weatherAction(city, date):
     convDate = convertDate(date)
     yql_query = ("select item from weather.forecast where woeid in " +
@@ -201,7 +201,7 @@ def sunset():
     sub = container.get("channel").get("astronomy").get("sunset")
     return { "speech": ("Sunset today is at " + sub + "."),
              "displayText": ("Sunset today is at " + sub + "."),
-             "source": "yahooWeather" }
+             "source": "yahooWeather" }"""
 
 def getTimeAction():
     now = datetime.datetime.now(pytz.timezone("US/Central"))
@@ -242,15 +242,15 @@ def convertDate(agentDate):
 #--- Test function ---
 
 def test():
-    print(weatherOutfit("Sioux Falls", "2018-08-09", "hat"))
+    print(weatherActions.weatherOutfit("Sioux Falls", "2018-08-09", "hat"))
 
 #-----------------------------------------------------------------------
 #--- Run main ---
 
 if __name__ == '__main__':
-    #test()
+    test()
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=False, port = port, host='0.0.0.0')
+    #app.run(debug=False, port = port, host='0.0.0.0')
 
 
 
