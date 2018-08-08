@@ -69,7 +69,8 @@ def weatherOutfit(city, date, outfit):
     elif outfit in v1o_webhook.OUTFIT_WARM:
         return weatherTemperature(city, "warm", date)
     elif (outfit in v1o_webhook.OUTFIT_CONDITIONS.keys()):
-        conditions = v1o_webhook.CONDITIONS.get(OUTFIT_CONDITIONS.get(outfit)).split(";")
+        conditions = v1o_webhook.CONDITIONS.get(
+                     v10_webhook.OUTFIT_CONDITIONS.get(outfit)).split(";")
         yql_query = ("select item from weather.forecast where woeid in " +
                      "(select woeid from geo.places(1) where text='" + city + "')")
         container = v1o_webhook.yahooWeather(yql_query)
