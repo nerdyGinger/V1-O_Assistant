@@ -3,7 +3,7 @@ Program: weatherActions.py
 Author: nerdyGinger
 Off-loads weather functions from the main webhook.
 Contains:
-basic weather, temperature, weather/outfit, sunrise, and sunset.
+basic weather, temperature, weather/outfit, sunrise, and sunset actions.
 """
 import pytz, datetime, v1o_webhook 
 
