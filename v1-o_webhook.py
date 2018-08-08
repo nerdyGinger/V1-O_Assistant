@@ -32,9 +32,16 @@ OUTFIT_CHILLY = [ "sweatshirt", "hoodie", "cardigan", "long sleeves", "shawls", 
 OUTFIT_WARM = [ "t-shirt", "shorts", "tank top", "sandals", "bathing suit", "swim suit",
                 "skirt", "capri", "flip flops" ]
 
-OUTFITS_CONDITIONS = { "umbrella": "rain", "rain jacket": "rain", "rain coat": "rain",
+OUTFIT_CONDITIONS = { "umbrella": "rain", "rain jacket": "rain", "rain coat": "rain",
                        "boots": "snow", "ski pants": "snow", "snow pants": "snow",
                        "sunglasses": "sun", "sunscreen": "sun" }
+
+CONDITIONS = { "severe": "tornado;tropical storm;hurricane;severe;hail;blizzard",
+               "snow": "snow",
+               "rain": "thunderstorm;rain;sleet;drizzle;shower",
+               "windy": "windy;blustery",
+               "visibility": "foggy;haze;smokey;dust",
+               "sun": "hot;sunny;fair;partly cloudy"}
 
 OUTFITS_TEMPS = { }
             
@@ -143,6 +150,38 @@ def weatherTemperature(city, temp, date):
 
 def weatherOutfit(city, date, outfit):
     convDate = convertDate(date)
+    if outfit in OUTFIT_COLD:
+        return weatherTemperature(city, "cold", date)
+    elif (outfit in OUTFIT_CHILLY):
+        return weatherTemperature(city, "chilly", date)
+    elif outfit in OUTFIT_WARM:
+        return weatherTemperature(city, "warm", date)
+    elif (outfit in OUTFIT_CONDITIONS.keys()):
+        conditions = CONDITIONS.get(OUTFIT_CONDITIONS.get(outfit)).split(";")
+        yql_query = ("select item from weather.forecast where woeid in " +
+                     "(select woeid from geo.places(1) where text='" + city + "')")
+        container = yahooWeather(yql_query)
+        sub = container.get("channel").get("item").get("forecast")
+        for i in sub:
+            if (i.get("date") == convDate):
+                for j in conditions:
+                    if j in i.get("text").lower():
+                        return { "speech": ("Yes, the forecast for " + convDate[:-4] + " is "
+                                            + i.get("text") + ", so your " + outfit +
+                                            " may be a wise choice."),
+                                 "displayText": ("Yes, the forecast for " + convDate[:-4] +
+                                                 " is " + i.get("text") + ", so your " +
+                                                 outfit + " may be a wise choice."),
+                                 "source": "yahooWeather" }
+                return { "speech": ("The forecast for " + convDate[:-4] + " is actually " +
+                                    i.get("text") + "."),
+                         "displayText": ("The forecast for " + convDate[:-4] + " is actually " +
+                                    i.get("text") + "."),
+                         "source": "yahooWeather" }
+    else:
+        return weatherAction(city, date)
+        
+        
     return { "speech": "This functionality is still in development. My apologies.",
              "displayText": "This functionality is still in development. My apologies.",
              "source": "yahooWeather" }
@@ -203,7 +242,7 @@ def convertDate(agentDate):
 #--- Test function ---
 
 def test():
-    print(weatherTemperature("Sioux Falls", "", "2018-08-04"))
+    print(weatherOutfit("Sioux Falls", "2018-08-09", "hat"))
 
 #-----------------------------------------------------------------------
 #--- Run main ---
