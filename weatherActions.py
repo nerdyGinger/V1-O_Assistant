@@ -5,7 +5,7 @@ Off-loads weather functions from the main webhook.
 Contains:
 basic weather, temperature, weather/outfit, sunrise, and sunset actions.
 """
-import pytz, datetime, v1o_webhook
+import pytz, datetime, v1o_webhook, random
 from constants import *
 
 def weatherAction(city, date):
@@ -17,7 +17,7 @@ def weatherAction(city, date):
     forecast = "unknown"
     for i in sub:
         if (i.get("date") == convDate):
-            text = ("The forecast in " + city + " on " + convDate[:-4] + " is " + 
+            text = ("The forecast in " + city + " on " + convDate[:-5] + " is " + 
                     i.get("text") + " with a high of " + i.get("high") + ".")
     return { "speech": text,
              "displayText": text,
@@ -36,14 +36,14 @@ def weatherTemperature(city, temp, date):
             if (i.get("date") == convDate):
                 high = int(i.get("high"))
                 if (high >= int(tempRange[0]) and high <= int(tempRange[1])):
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
                             str(high) + " degrees, so it should be " + temp + ".")
                 elif (high < int(tempRange[0])):
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
                             sttr(high) + " degrees, so it may be rather " +
                             TEMPS_COOLER.get(temp) + ".")
                 else:
-                    text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
                             str(high) + " degrees, so it may be rather " +
                             TEMPS_WARMER.get(temp) + ".")
     except:
@@ -55,7 +55,7 @@ def weatherTemperature(city, temp, date):
         forecast = "unknown"
         for i in sub:
             if (i.get("date") == convDate):
-                text = ("The high on " + convDate[:-4] + " is supposed to be " +
+                text = ("The high on " + convDate[:-5] + " is supposed to be " +
                         str(i.get("high")) + " degrees.")
     return { "speech": text,
          "displayText": text,
@@ -80,17 +80,19 @@ def weatherOutfit(city, date, outfit):
             if (i.get("date") == convDate):
                 for j in conditions:
                     if j in i.get("text").lower():
-                        return { "speech": ("Yes, the forecast for " + convDate[:-4] + " is "
-                                            + i.get("text") + ", so your " + outfit +
-                                            " may be a wise choice."),
-                                 "displayText": ("Yes, the forecast for " + convDate[:-4] +
-                                                 " is " + i.get("text") + ", so your " +
-                                                 outfit + " may be a wise choice."),
+                        randomText = random.choice(RANDOM_OUTFITS_POSITIVE)
+                        return { "speech": (randomText[0] + convDate[:-5] + randomText[1]
+                                            + i.get("text") + randomText[2] + outfit +
+                                            randomText[3]),
+                                 "displayText": (randomText[0] + convDate[:-5] + randomText[1]
+                                            + i.get("text") + randomText[2] + outfit +
+                                            randomText[3]),
                                  "source": "yahooWeather" }
-                return { "speech": ("The forecast for " + convDate[:-4] + " is actually " +
-                                    i.get("text") + "."),
-                         "displayText": ("The forecast for " + convDate[:-4] + " is actually " +
-                                    i.get("text") + "."),
+                randomText = random.choice(RANDOM_OUTFITS_NEGATIVE)
+                return { "speech": (randomText[0] + convDate[:-5] + randomText[1] +
+                                    i.get("text") + randomText[2]),
+                         "displayText": (randomText[0] + convDate[:-5] + randomText[1] +
+                                    i.get("text") + randomText[2]),
                          "source": "yahooWeather" }
     else:
         return weatherAction(city, date)

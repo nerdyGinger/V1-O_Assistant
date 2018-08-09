@@ -4,6 +4,8 @@ Author: nerdyGinger
 Constant variables for v1o_webhook.py and branching files.
 """
 
+#-------------------------------------------------------------------------------
+
 BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
 
 MONTHS = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June",
@@ -33,5 +35,26 @@ CONDITIONS = { "severe": "tornado;tropical storm;hurricane;severe;hail;blizzard"
                "windy": "windy;blustery",
                "visibility": "foggy;haze;smokey;dust",
                "sun": "hot;sunny;fair;partly cloudy"}
+
+#-------------------------------------------------------------------------------
+# --- Randomizers ---
+
+RANDOM_OUTFITS_POSITIVE = [ ["Yes, the forecast for ", " is ", ", so your ",
+                             " may be a wise choice."],
+                            ["The forecast for ", " is ", ", so your ",
+                             " is a logical choice."],
+                            ["On ", " the forecast is ", ". Your ",
+                             " should work well."] ]
+    
+RANDOM_OUTFITS_NEGATIVE = [ ["Actually, the forecast for ", " is ", "."],
+                           ["Well, you should know that the forecast on ",
+                            " is ", "."],
+                           ["I will leave the matter up to you. But the " +
+                            "forecast for ", " is ", "."],
+                            ["The forecast on ", " is actually ", "."] ]
+
+RANDOMIZER_WEATHER = [ RANDOM_OUTFITS_POSITIVE,
+                       RANDOM_OUTFITS_NEGATIVE ]
+                                 
 
 

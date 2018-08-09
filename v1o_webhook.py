@@ -100,7 +100,7 @@ def convertDate(agentDate):
 #--- Test function ---
 
 def test():
-    print(weatherActions.weatherOutfit("Sioux Falls", "2018-08-09", "hat"))
+    print(weatherActions.weatherOutfit("Sioux Falls", "2018-08-09", "sunscreen"))
 
 #-----------------------------------------------------------------------
 #--- Run main ---
