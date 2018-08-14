@@ -47,14 +47,20 @@ RANDOM_OUTFITS_POSITIVE = [ ["Yes, the forecast for ", " is ", ", so your ",
                              " should work well."] ]
     
 RANDOM_OUTFITS_NEGATIVE = [ ["Actually, the forecast for ", " is ", "."],
-                           ["Well, you should know that the forecast on ",
+                            ["Well, you should know that the forecast on ",
                             " is ", "."],
-                           ["I will leave the matter up to you. But the " +
+                            ["I will leave the matter up to you. But the " +
                             "forecast for ", " is ", "."],
-                            ["The forecast on ", " is actually ", "."] ]
+                            ["The forecast on ", " is actually ", "."],
+                            ["You should not need it. The forecast for ", 
+                             " is ", "."] ]
 
-RANDOMIZER_WEATHER = [ RANDOM_OUTFITS_POSITIVE,
-                       RANDOM_OUTFITS_NEGATIVE ]
-                                 
+RANDOM_FORECAST = [ ["The weather in ", " on ", " is supposed to be ",
+                     " with a high of ", "." ],
+                    ["The forecast for ", " on ", " is ", " with a high of ",
+                     "."],
+                    ["In ", " on ", ", the weather should be ", " with " +
+                     "a high of ", "."] ]
+
 
 

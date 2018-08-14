@@ -17,8 +17,10 @@ def weatherAction(city, date):
     forecast = "unknown"
     for i in sub:
         if (i.get("date") == convDate):
-            text = ("The forecast in " + city + " on " + convDate[:-5] + " is " + 
-                    i.get("text") + " with a high of " + i.get("high") + ".")
+            randomText = random.choice(RANDOM_FORECAST)
+            text = (randomText[0] + city + randomText[1] + convDate[:-5] +
+                    randomText[2] + i.get("text") + randomText[3] +
+                    i.get("high") + randomText[4])
     return { "speech": text,
              "displayText": text,
              "source": "yahooWeather" }
@@ -96,12 +98,6 @@ def weatherOutfit(city, date, outfit):
                          "source": "yahooWeather" }
     else:
         return weatherAction(city, date)
-        
-        
-    return { "speech": "This functionality is still in development. My apologies.",
-             "displayText": "This functionality is still in development. My apologies.",
-             "source": "yahooWeather" }
-
 
 def sunrise():
     yql_query = "select astronomy.sunrise from weather.forecast where woeid=12782768"
