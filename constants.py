@@ -62,5 +62,26 @@ RANDOM_FORECAST = [ ["The weather in ", " on ", " is supposed to be ",
                     ["In ", " on ", ", the weather should be ", " with " +
                      "a high of ", "."] ]
 
+RANDOM_TEMP_DIFF = [ ["The high on ", " is supposed to be ", " degrees, so it " +
+                       "may be rather ", "."],
+                      ["On ", " it should be ", ", so it might be rather ", "."],
+                      ["The temperature on ", " should be approximately ",
+                       " degrees, so you it may feel ", "."] ]
+
+RANDOM_TEMP_RANGE = [ ["The high on ", " is supposed to be " , " degrees, so it " +
+                 "should be ", "."],
+                ["On ", " it should be ", ", so ", " would be an appropriate" +
+                 " description."],
+                ["The temperature on ", " is predicted to be ", " degrees, so ",
+                 " should describe the conditions accurately."] ]
+
+RANDOM_TEMP = [ ["The high on ", " is supposed to be ", " degrees."],
+                ["On ", " the high is ", " degrees."],
+                ["The temperature on ", " should be around ", " degrees."],
+                ["On ", " the high is expected to be ", "."],
+                ["The high on ", " should be ", "."],
+                ["The temperature on ", " is predicted to be ", "."] ]
+                
+
 
 

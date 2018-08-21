@@ -38,16 +38,19 @@ def weatherTemperature(city, temp, date):
             if (i.get("date") == convDate):
                 high = int(i.get("high"))
                 if (high >= int(tempRange[0]) and high <= int(tempRange[1])):
-                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
-                            str(high) + " degrees, so it should be " + temp + ".")
+                    randomText = random.choice(RANDOM_TEMP_RANGE)
+                    text = (randomText[0] + convDate[:-5] + randomText[1] +
+                            str(high) + randomText[2] + temp + randomText[3])
                 elif (high < int(tempRange[0])):
-                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
-                            sttr(high) + " degrees, so it may be rather " +
-                            TEMPS_COOLER.get(temp) + ".")
+                    randomText = random.choice(RANDOM_TEMP_DIFF)
+                    text = (randomText[0] + convDate[:-5] + randomText[1] +
+                            sttr(high) + randomText[2] +
+                            TEMPS_COOLER.get(temp) + randomText[3])
                 else:
-                    text = ("The high on " + convDate[:-5] + " is supposed to be " +
-                            str(high) + " degrees, so it may be rather " +
-                            TEMPS_WARMER.get(temp) + ".")
+                    randomText = random.choice(RANDOM_TEMP_DIFF)
+                    text = (randomText[0] + convDate[:-5] + randomText[1] +
+                            str(high) + randomText[2] + TEMPS_WARMER.get(temp)
+                            + randomText[3])
     except:
         convDate = v1o_webhook.convertDate(date)
         yql_query = ("select item from weather.forecast where woeid in " +
@@ -57,8 +60,9 @@ def weatherTemperature(city, temp, date):
         forecast = "unknown"
         for i in sub:
             if (i.get("date") == convDate):
-                text = ("The high on " + convDate[:-5] + " is supposed to be " +
-                        str(i.get("high")) + " degrees.")
+                randomText = random.choice(RANDOM_TEMP)
+                text = (randomText[0] + convDate[:-5] + randomText[1] +
+                        str(i.get("high")) + randomText[2])
     return { "speech": text,
          "displayText": text,
          "source": "yahooWeather" }
