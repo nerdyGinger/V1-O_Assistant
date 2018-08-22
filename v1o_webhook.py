@@ -48,14 +48,14 @@ def processRequest(req):
     elif (req.get("result").get("action") == "sunset"):
         res = weatherActions.sunset()
     elif (req.get("result").get("action") == "web.search"):
-        res = search()
+        res = search(req.get("result").get("parameters").get("q"))
     elif (req.get("result").get("action") == "time.get"):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
         res = timer(req.get("result").get("parameters").get("duration").get("amount"),
                     req.get("result").get("parameters").get("duration").get("unit"))
     elif (req.get("result").get("action") == "wakeup"):
-        res = wakeup(req.get("result").get("parameters").get("q"))
+        res = wakeup()
     else:
         return {}
     return res
