@@ -47,13 +47,15 @@ def processRequest(req):
         res =  weatherActions.sunrise()
     elif (req.get("result").get("action") == "sunset"):
         res = weatherActions.sunset()
+    elif (req.get("result").get("action") == "web.search"):
+        res = search()
     elif (req.get("result").get("action") == "time.get"):
         res = getTimeAction()
     elif (req.get("result").get("action") == "setTimer"):
         res = timer(req.get("result").get("parameters").get("duration").get("amount"),
                     req.get("result").get("parameters").get("duration").get("unit"))
     elif (req.get("result").get("action") == "wakeup"):
-        res = wakeup()
+        res = wakeup(req.get("result").get("parameters").get("q"))
     else:
         return {}
     return res
@@ -73,10 +75,17 @@ def timer(amount, unit):
              "displayText": "Timer set.",
              "source": ("android;" + str(amount) + ";" + unit) }
 
+def search(query):
+    return { "speech": "Unable to search the web for " + query + ".",
+             "displayText": "Unable to search the web for " + query + ".",
+             "source": "webSearch" }
+
 def wakeup():
     return { "speech": "The server is already awake.",
              "displayText": "The server is already awake.",
              "source": "heroku" }
+
+
 
 #-----------------------------------------------------------------------
 #--- Helper functions ---
