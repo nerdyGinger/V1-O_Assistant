@@ -7,9 +7,10 @@ time.
 """
 
 import urllib, urllib.request, json, datetime
-import json, os, pytz, weatherActions
+import json, os, pytz, weatherActions, duckduckpy
 from flask import Flask, request, make_response
 from constants import *
+
 
 #--------------------------------------------------------------------------
 #--- Connction functions ---
@@ -76,8 +77,16 @@ def timer(amount, unit):
              "source": ("android;" + str(amount) + ";" + unit) }
 
 def search(query):
-    return { "speech": "Unable to search the web for " + query + ".",
-             "displayText": "Unable to search the web for " + query + ".",
+    response = duckduckpy.query(query, False, 'dict', False, 'duckduckpy 0.2',
+                     True, True, False)
+    result = "No results found."
+    if(response["related_topics"] != []):
+        result = (response["related_topics"][0]["text"])
+    if(response["abstract"] != ""):
+        result = (response["abstract"])
+    
+    return { "speech": "Web result for " + query + ": " + result,
+             "displayText": "Web result for " + query + ": " + result,
              "source": "webSearch" }
 
 def wakeup():
@@ -109,7 +118,7 @@ def convertDate(agentDate):
 #--- Test function ---
 
 def test():
-    print(weatherActions.weatherOutfit("Sioux Falls", "2018-08-09", "sunscreen"))
+    print(search("hatsune miku"))
 
 #-----------------------------------------------------------------------
 #--- Run main ---
