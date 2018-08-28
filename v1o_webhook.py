@@ -1,9 +1,9 @@
 """
 Program: v1o_webhook.py
-Author: yahoo/nerdyGinger
+Author: nerdyGinger
 Serves as the webhook central for V1-O; functionality right now includes
-getting weather forecasts, times for sunrise/sunset, and telling the
-time.
+getting weather forecasts, times for sunrise/sunset, telling the time, and
+doing very simple web searches. Uses yahooWeatherApi and duckduckgoApi.
 """
 
 import urllib, urllib.request, json, datetime
@@ -55,6 +55,9 @@ def processRequest(req):
     elif (req.get("result").get("action") == "setTimer"):
         res = timer(req.get("result").get("parameters").get("duration").get("amount"),
                     req.get("result").get("parameters").get("duration").get("unit"))
+    elif (req.get("result").get("action") == "reminders.add"):
+        res = reminderAdd(req.get("result").get("parameters").get("date-time"),
+                          req.get("result").get("parameters").get("name
     elif (req.get("result").get("action") == "wakeup"):
         res = wakeup()
     else:
@@ -88,6 +91,11 @@ def search(query):
     return { "speech": "Web result for " + query + ": " + result,
              "displayText": "Web result for " + query + ": " + result,
              "source": "webSearch" }
+
+def reminderSet(datetime, reminder):
+    return { "speech": "What would you like the reminder to say?",
+             "displayText": "What would you like the reminder to say?",
+             "source": "android;" + str(datetime) + ";" + reminder }
 
 def wakeup():
     return { "speech": "The server is already awake.",
