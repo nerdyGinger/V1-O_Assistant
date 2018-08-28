@@ -92,7 +92,7 @@ def search(query):
              "displayText": "Web result for " + query + ": " + result,
              "source": "webSearch" }
 
-def reminderSet(datetime, reminder):
+def reminderAdd(datetime, reminder):
     return { "speech": "Reminder set for " + datetime,
              "displayText": "Reminder set for " + datetime,
              "source": "android;" + str(datetime) + ";" + reminder }
