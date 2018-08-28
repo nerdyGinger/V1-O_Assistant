@@ -57,7 +57,7 @@ def processRequest(req):
                     req.get("result").get("parameters").get("duration").get("unit"))
     elif (req.get("result").get("action") == "reminders.add"):
         res = reminderAdd(req.get("result").get("parameters").get("date-time"),
-                          req.get("result").get("parameters").get("name
+                          req.get("result").get("parameters").get("name"))
     elif (req.get("result").get("action") == "wakeup"):
         res = wakeup()
     else:
@@ -93,8 +93,8 @@ def search(query):
              "source": "webSearch" }
 
 def reminderSet(datetime, reminder):
-    return { "speech": "What would you like the reminder to say?",
-             "displayText": "What would you like the reminder to say?",
+    return { "speech": "Reminder set for " + datetime,
+             "displayText": "Reminder set for " + datetime,
              "source": "android;" + str(datetime) + ";" + reminder }
 
 def wakeup():
