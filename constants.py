@@ -81,6 +81,18 @@ RANDOM_TEMP = [ ["The high on ", " is supposed to be ", " degrees."],
                 ["On ", " the high is expected to be ", "."],
                 ["The high on ", " should be ", "."],
                 ["The temperature on ", " is predicted to be ", "."] ]
+
+RANDOM_REMINDER_SET = [ ["I will remind you at ", "."],
+                        ["Reminder set for ", "."],
+                        ["Okay, I will remind you at ", "."],
+                        ["Okay, your reminder is set for ", "."],
+                        ["Okay, at ", " I will activate your reminder."],
+                        ["Your reminder is set for ", "."] ]
+
+RANDOM_WEBSEARCH = [ ["Web result for ", ": "],
+                     ["Here is what I found for ", ": "],
+                     ["This is the web result for ", ": "],
+                     ["Search result for ", ": "] ]
                 
 
 

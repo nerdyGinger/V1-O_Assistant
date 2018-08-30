@@ -77,7 +77,7 @@ def getTimeAction():
 def timer(amount, unit):
     return { "speech": "Timer set.",
              "displayText": "Timer set.",
-             "source": ("android;" + str(amount) + ";" + unit) }
+             "source": ("android;timer;" + str(amount) + ";" + unit) }
 
 def search(query):
     response = duckduckpy.query(query, False, 'dict', False, 'duckduckpy 0.2',
@@ -87,15 +87,16 @@ def search(query):
         result = (response["related_topics"][0]["text"])
     if(response["abstract"] != ""):
         result = (response["abstract"])
-    
-    return { "speech": "Web result for " + query + ": " + result,
-             "displayText": "Web result for " + query + ": " + result,
+    randomText = random.choice(RANDOM_WEBSEARCH)
+    return { "speech": randomText[0] + query + ": " + result,
+             "displayText": randomText[0] + query + ": " + result,
              "source": "webSearch" }
 
 def reminderAdd(datetime, reminder):
-    return { "speech": "Reminder set for " + datetime,
-             "displayText": "Reminder set for " + datetime,
-             "source": "android;" + str(datetime) + ";" + reminder }
+    randomText = random.choice(RANDOM_REMINDER_SET)
+    return { "speech": randomText[0] + datetime + randomText[1],
+             "displayText": randomText[0] + datetime + randomText[1],
+             "source": "android;addReminder;" + str(datetime) + ";" + reminder }
 
 def wakeup():
     return { "speech": "The server is already awake.",
