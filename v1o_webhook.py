@@ -63,7 +63,7 @@ def processRequest(req):
                           parameters.get("date"),
                           parameters.get("all"))
     elif (action == "web.search"):
-        res = parameters.get("q"))
+        res = parameters.get("q")
     elif (action == "sunrise"):
         res =  weatherActions.sunrise()
     elif (action == "sunset"):
