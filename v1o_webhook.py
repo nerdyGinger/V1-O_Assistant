@@ -32,7 +32,7 @@ def webhook():
 def processRequest(req):
     action = req.get("result").get("action")
     parameters = req.get("result").get("parameters")
-    contextParameters = req.get("result").get("contexts").get("parameters")
+    contextParameters = req.get("result").get("contexts")[0].get("parameters")
     if (action == "yahooWeatherForcast"):
         res = weatherActions.weatherAction(
             contextParameters.get("address"),
