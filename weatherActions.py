@@ -15,6 +15,7 @@ def weatherAction(city, date):
     container = v1o_webhook.yahooWeather(yql_query)
     sub = container.get("channel").get("item").get("forecast")
     forecast = "unknown"
+    text = "Unable to find data."
     for i in sub:
         if (i.get("date") == convDate):
             randomText = random.choice(RANDOM_FORECAST)

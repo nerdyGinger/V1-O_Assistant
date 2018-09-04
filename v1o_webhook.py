@@ -30,38 +30,54 @@ def webhook():
     return r
 
 def processRequest(req):
-    if (req.get("result").get("action") == "yahooWeatherForcast"):
+    action = req.get("result").get("action")
+    parameters = req.get("result").get("parameters")
+    contextParameters = req.get("result").get("contexts").get("parameters")
+    if (action == "yahooWeatherForcast"):
         res = weatherActions.weatherAction(
-            req.get("result").get("contexts")[0].get("parameters").get("address"),
-            req.get("result").get("contexts")[0].get("parameters").get("date-time"))
-    elif (req.get("result").get("action") == "weatherTemperature"):
+            contextParameters.get("address"),
+            contextParameters.get("date-time"))
+    elif (action == "weatherTemperature"):
         res = weatherActions.weatherTemperature(
-            req.get("result").get("contexts")[0].get("parameters").get("address"),
-            req.get("result").get("contexts")[0].get("parameters").get("temperature"),
-            req.get("result").get("contexts")[0].get("parameters").get("date-time"))
-    elif (req.get("result").get("action") == "weatherOutfit"):
+            contextParameters.get("address"),
+            contextParameters.get("temperature"),
+            contextParameters.get("date-time"))
+    elif (action == "weatherOutfit"):
         res = weatherActions.weatherOutfit(
-            req.get("result").get("contexts")[0].get("parameters").get("address"),
-            req.get("result").get("contexts")[0].get("parameters").get("date-time"),
-            req.get("result").get("contexts")[0].get("parameters").get("outfit"))
-    elif (req.get("result").get("action") == "sunrise"):
+            contextParameters.get("address"),
+            contextParameters.get("date-time"),
+            contextParameters.get("outfit"))
+    elif (action == "setTimer"):
+        res = timer(parameters.get("duration").get("amount"),
+                    parameters.get("duration").get("unit"))
+    elif (action == "reminders.add"):
+        res = reminderAdd(parameters.get("date-time"),
+                          parameters.get("name"))
+    elif (action == "alarm.set"):
+        res = alarmSet(parameters.get("alarm-name"),
+                       parameters.get("time"),
+                       parameters.get("date"),
+                       parameters.get("recurrence"))
+    elif (action == "alarm.remove"):
+        res = alarmRemove(parameters.get("time"),
+                          parameters.get("date"),
+                          parameters.get("all"))
+    elif (action == "web.search"):
+        res = parameters.get("q"))
+    elif (action == "sunrise"):
         res =  weatherActions.sunrise()
-    elif (req.get("result").get("action") == "sunset"):
+    elif (action == "sunset"):
         res = weatherActions.sunset()
-    elif (req.get("result").get("action") == "web.search"):
-        res = search(req.get("result").get("parameters").get("q"))
-    elif (req.get("result").get("action") == "time.get"):
+    elif (action == "time.get"):
         res = getTimeAction()
-    elif (req.get("result").get("action") == "setTimer"):
-        res = timer(req.get("result").get("parameters").get("duration").get("amount"),
-                    req.get("result").get("parameters").get("duration").get("unit"))
-    elif (req.get("result").get("action") == "reminders.add"):
-        res = reminderAdd(req.get("result").get("parameters").get("date-time"),
-                          req.get("result").get("parameters").get("name"))
-    elif (req.get("result").get("action") == "wakeup"):
+    elif (action == "wakeup"):
         res = wakeup()
     else:
-        return {}
+        return { "speech": ("This request is unknown to me. I have logged this " +
+                            "interaction for further development."),
+                 "displayText": ("This request is unknown to me. I have logged this" +
+                                 " interaction for further development."),
+                 "source": "unknownCommand" }
     return res
 
 #--------------------------------------------------------------
@@ -97,6 +113,17 @@ def reminderAdd(datetime, reminder):
     return { "speech": randomText[0] + datetime + randomText[1],
              "displayText": randomText[0] + datetime + randomText[1],
              "source": "android;addReminder;" + str(datetime) + ";" + reminder }
+
+def alarmSet(name, time, date, recurrence):
+    return { "speech": "Unable to set alarm.",
+             "displayText": "Unable to set alarm.",
+             "source": "android;setAlarm;" + name + ";" + time + ";"
+                                           + date + ";" + recurrence }
+
+def alarmRemove(time, date, removeAll):
+    return { "speech": "Unable to remove alarm.",
+             "displayText": "Unable to remove alarm.",
+             "source": "android;removeAlarm;" + time + ";" + date + ";" + removeAll }
 
 def wakeup():
     return { "speech": "The server is already awake.",
