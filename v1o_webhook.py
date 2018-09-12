@@ -156,7 +156,7 @@ def pingDyno():
     while True:
         requests.get("https://v1o-guts.herokuapp.com")
         print("*ping*")
-        sleep(10)
+        sleep(1800)
 
 #-----------------------------------------------------------------------
 #--- Test function ---
