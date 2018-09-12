@@ -6,9 +6,10 @@ getting weather forecasts, times for sunrise/sunset, telling the time, and
 doing very simple web searches. Uses yahooWeatherApi and duckduckgoApi.
 """
 
-import urllib, urllib.request, json, datetime, random, time
+import urllib, urllib.request, json, datetime, random
 import json, os, pytz, weatherActions, duckduckpy, requests, threading
 from flask import Flask, request, make_response
+from time import sleep
 from constants import *
 
 
@@ -155,7 +156,7 @@ def pingDyno():
     while True:
         requests.get("https://v1o-guts.herokuapp.com")
         print("*ping*")
-        time.sleep(10)
+        sleep(10)
 
 #-----------------------------------------------------------------------
 #--- Test function ---
