@@ -7,7 +7,7 @@ doing very simple web searches. Uses yahooWeatherApi and duckduckgoApi.
 """
 
 import urllib, urllib.request, json, datetime, random
-import json, os, pytz, weatherActions, duckduckpy
+import json, os, pytz, weatherActions, duckduckpy, requests, threading
 from flask import Flask, request, make_response
 from constants import *
 
@@ -150,6 +150,9 @@ def convertDate(agentDate):
         convDate = now.strftime("%d %b %Y")
     return convDate
 
+def pingDyno():
+    requests.get("https://v1o-guts.herokuapp.com")
+
 #-----------------------------------------------------------------------
 #--- Test function ---
 
@@ -162,6 +165,8 @@ def test():
 if __name__ == '__main__':
     #test()
     port = int(os.getenv('PORT', 5000))
+    pingThread = threading.Thread(target=pingDyno)
+    pingThread.start()
     app.run(debug=False, port = port, host='0.0.0.0')
 
 
