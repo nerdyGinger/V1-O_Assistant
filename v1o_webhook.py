@@ -154,7 +154,8 @@ def pingDyno():
     #pings dyno server every 30 minutes
     while True:
         requests.get("https://v1o-guts.herokuapp.com")
-        time.sleep(1800)
+        print("*ping*")
+        time.sleep(10)
 
 #-----------------------------------------------------------------------
 #--- Test function ---
