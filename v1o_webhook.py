@@ -151,7 +151,10 @@ def convertDate(agentDate):
     return convDate
 
 def pingDyno():
-    requests.get("https://v1o-guts.herokuapp.com")
+    #pings dyno server every 30 minutes
+    while True:
+        requests.get("https://v1o-guts.herokuapp.com")
+        time.sleep(1800)
 
 #-----------------------------------------------------------------------
 #--- Test function ---
