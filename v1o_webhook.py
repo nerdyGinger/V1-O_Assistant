@@ -20,6 +20,7 @@ app = Flask(__name__)
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
+    #hooking up to V1-O
     print("Received hook...")
     req = request.get_json(silent=True, force=True)
     result = processRequest(req)
@@ -31,6 +32,7 @@ def webhook():
     return r
 
 def processRequest(req):
+    #sort out the requests/actions
     action = req.get("result").get("action")
     parameters = req.get("result").get("parameters")
     contextParameters = req.get("result").get("contexts")[0].get("parameters")
@@ -85,6 +87,7 @@ def processRequest(req):
 #--- Webhook actions ---
 
 def getTimeAction():
+    #returns current time in central US timezone
     now = datetime.datetime.now(pytz.timezone("US/Central"))
     stringTime = now.strftime("%I:%M%p")
     return ({ "speech": ("It is " + stringTime + "."),
@@ -92,11 +95,13 @@ def getTimeAction():
                 "source": "pytime" })
 
 def timer(amount, unit):
+    #set timer -->under construction
     return { "speech": "Timer set.",
              "displayText": "Timer set.",
              "source": ("android;timer;" + str(amount) + ";" + unit) }
 
 def search(query):
+    #run wearch query via duckduckgo API
     response = duckduckpy.query(query, False, 'dict', False, 'duckduckpy 0.2',
                      True, True, False)
     result = "No results found."
@@ -110,23 +115,27 @@ def search(query):
              "source": "webSearch" }
 
 def reminderAdd(datetime, reminder):
+    #add reminder -->under construction
     randomText = random.choice(RANDOM_REMINDER_SET)
     return { "speech": randomText[0] + datetime + randomText[1],
              "displayText": randomText[0] + datetime + randomText[1],
              "source": "android;addReminder;" + str(datetime) + ";" + reminder }
 
 def alarmSet(name, time, date, recurrence):
+    #set alarm -->under construction
     return { "speech": "Unable to set alarm.",
              "displayText": "Unable to set alarm.",
              "source": "android;setAlarm;" + name + ";" + time + ";"
                                            + date + ";" + recurrence }
 
 def alarmRemove(time, date, removeAll):
+    #remove alarm -->under construction
     return { "speech": "Unable to remove alarm.",
              "displayText": "Unable to remove alarm.",
              "source": "android;removeAlarm;" + time + ";" + date + ";" + removeAll }
 
 def wakeup():
+    #should always return this if webhook is functioning properly
     return { "speech": "The server is already awake.",
              "displayText": "The server is already awake.",
              "source": "heroku" }
@@ -137,12 +146,14 @@ def wakeup():
 #--- Helper functions ---
 
 def yahooWeather(query):
+    #formats query for yahooWeather API call and returns results as json
     yql_url = BASE_URL + urllib.parse.urlencode({'q':query}) + "&format=json"
     result = urllib.request.urlopen(yql_url).read()
     data = json.loads(result)
     return data['query']['results']
 
 def convertDate(agentDate):
+    #converts date from agent to yahoo-friendly format
     try:
         splitDate = agentDate.split("-")
         convDate = splitDate[2] + " " + MONTHS.get(splitDate[1]) + " " + splitDate[0]
