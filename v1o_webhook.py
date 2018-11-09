@@ -3,7 +3,9 @@ Program: v1o_webhook.py
 Author: nerdyGinger
 Serves as the webhook central for V1-O; functionality right now includes
 getting weather forecasts, times for sunrise/sunset, telling the time, and
-doing very simple web searches. Uses yahooWeatherApi and duckduckgoApi.
+doing very simple web searches. Contains functions to pass parameters on to
+platform application for timer, alarm, and reminders. Uses yahooWeatherApi
+and duckduckgoApi.
 """
 
 import urllib, urllib.request, json, datetime, random

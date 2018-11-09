@@ -1,4 +1,4 @@
 Flask==1.0.2
 pytz==2018.5
 duckduckpy==0.2
-requests==2.19.1
+requests==2.20.0
