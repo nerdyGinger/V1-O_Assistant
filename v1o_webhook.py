@@ -68,9 +68,7 @@ def processRequest(req):
                           parameters.get("date"),
                           parameters.get("all"))
     elif (action == "web.search"):
-        if (req.get("result").get("contexts")[0].get("name") == "websearch-followup"):
-            res = search(contextParameters.get("q"))
-        res = search(parameters.get("q"))
+        res = search(contextParameters.get("q"))
     elif (action == "sunrise"):
         res =  weatherActions.sunrise()
     elif (action == "sunset"):
