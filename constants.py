@@ -6,7 +6,13 @@ Constant variables for v1o_webhook.py and branching files.
 
 #-------------------------------------------------------------------------------
 
-BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
+BASE_URL = "https://weather-ydn-yql.media.yahoo.com/forecastrss"
+
+YAHOO_APP_ID = "jdn6FZ6q"
+
+YAHOO_CLIENT_ID = "dj0yJmk9bXVtZlB3bTRiYTdQJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWY3"
+
+YAHOO_CLIENT_SECRET = "71cdadc9a74860f9b4ee9490aa12bee1bb65563f"
 
 MONTHS = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June",
           "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" }
@@ -20,7 +26,7 @@ TEMPS_WARMER = { "freezing": "cold", "cold": "chilly", "chilly": "warm", "warm":
 
 OUTFIT_COLD = [ "jacket", "hat", "turtleneck", "coat", "scarf", "pants", "gloves" ]
 
-OUTFIT_CHILLY = [ "sweatshirt", "hoodie", "cardigan", "long sleeves", "shawls", "jeans" ]
+OUTFIT_CHILLY = [ "sweatshirt", "hoodie", "cardigan", "long sleeves", "shawl", "jeans" ]
 
 OUTFIT_WARM = [ "t-shirt", "shorts", "tank top", "sandals", "bathing suit", "swim suit",
                 "skirt", "capri", "flip flops" ]

@@ -8,7 +8,7 @@ platform application for timer, alarm, and reminders. Uses yahooWeatherApi
 and duckduckgoApi.
 """
 
-import urllib, urllib.request, json, datetime, random
+import urllib, urllib.request, json, datetime, random, requests, requests.auth
 import json, os, pytz, weatherActions, duckduckpy, requests, threading
 from flask import Flask, request, make_response
 from time import sleep
@@ -68,7 +68,7 @@ def processRequest(req):
                           parameters.get("date"),
                           parameters.get("all"))
     elif (action == "web.search"):
-        res = parameters.get("q")
+        res = search(parameters.get("q"))
     elif (action == "sunrise"):
         res =  weatherActions.sunrise()
     elif (action == "sunset"):
@@ -149,10 +149,22 @@ def wakeup():
 
 def yahooWeather(query):
     #formats query for yahooWeather API call and returns results as json
-    yql_url = BASE_URL + urllib.parse.urlencode({'q':query}) + "&format=json"
+    yql_url = BASE_URL + "?location=minneapolis,mn&format=json"
+    
+    #-----Yahoo updated its api to need oauth-----
+    nonce.replace("\\W", "")
+    headers = { 'Host' : 'weather-ydn-yql.media.yahoo.com',
+                'Yahoo-App-Id' : YAHOO_APP_ID,
+                'Authorization' : 'OAuth' }
+    parameters = { 'oauth_consumer_key' : YAHOO_CLIENT_ID,
+                   'oauth_signature_method' : 'HMAC-SHA1',
+                   'oauth_timestamp' : datetime.datetime.now(pytz.timezone("US/Central")),
+                   'oauth_version' : '1.0', }
+    #-----In progress-----------------------------
+    
     result = urllib.request.urlopen(yql_url).read()
     data = json.loads(result)
-    return data['query']['results']
+    return data['forecasts']
 
 def convertDate(agentDate):
     #converts date from agent to yahoo-friendly format
@@ -182,11 +194,12 @@ def test():
 
 if __name__ == '__main__':
     #test()
+    #"""
     port = int(os.getenv('PORT', 5000))
     pingThread = threading.Thread(target=pingDyno)
     pingThread.start()
     app.run(debug=False, port = port, host='0.0.0.0')
-
+    #"""
 
 
 
