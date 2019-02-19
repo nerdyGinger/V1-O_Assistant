@@ -10,8 +10,8 @@ and duckduckgoApi.
 
 import urllib, urllib.request, json, datetime, random, requests, requests.auth
 import json, os, pytz, weatherActions, duckduckpy, requests, threading
+import uuid, time
 from flask import Flask, request, make_response
-from time import sleep
 from constants import *
 
 
@@ -152,7 +152,6 @@ def yahooWeather(query):
     yql_url = BASE_URL + "?location=minneapolis,mn&format=json"
     
     #-----Yahoo updated its api to need oauth-----
-    nonce.replace("\\W", "")
     headers = { 'Host' : 'weather-ydn-yql.media.yahoo.com',
                 'Yahoo-App-Id' : YAHOO_APP_ID,
                 'Authorization' : 'OAuth' }
@@ -181,20 +180,19 @@ def pingDyno():
     while True:
         requests.get("https://v1o-guts.herokuapp.com")
         print("*ping*")
-        sleep(1800)
+        time.sleep(1800)
 
 #-----------------------------------------------------------------------
 #--- Test function ---
 
 def test():
-    print(search("hatsune miku"))
 
 #-----------------------------------------------------------------------
 #--- Run main ---
 
 if __name__ == '__main__':
-    #test()
-    #"""
+    test()
+    """
     port = int(os.getenv('PORT', 5000))
     pingThread = threading.Thread(target=pingDyno)
     pingThread.start()

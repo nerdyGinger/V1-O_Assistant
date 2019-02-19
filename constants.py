@@ -2,17 +2,13 @@
 Program: constants.py
 Author: nerdyGinger
 Constant variables for v1o_webhook.py and branching files.
+(Secret YahooApi values are in separate file for local dev,
+and looked down tight for deployment)
 """
 
 #-------------------------------------------------------------------------------
 
 BASE_URL = "https://weather-ydn-yql.media.yahoo.com/forecastrss"
-
-YAHOO_APP_ID = "jdn6FZ6q"
-
-YAHOO_CLIENT_ID = "dj0yJmk9bXVtZlB3bTRiYTdQJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWY3"
-
-YAHOO_CLIENT_SECRET = "71cdadc9a74860f9b4ee9490aa12bee1bb65563f"
 
 MONTHS = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June",
           "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" }
