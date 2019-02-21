@@ -36,9 +36,9 @@ def webhook():
 
 def processRequest(req):
     #sort out the requests/actions
-    action = req.get("result").get("action")
-    parameters = req.get("result").get("parameters")
-    contextParameters = req.get("result").get("contexts")[0].get("parameters")
+    action = req.get("queryResult").get("action")
+    parameters = req.get("queryResult").get("parameters")
+    contextParameters = req.get("queryResult").get("outputContexts")[0].get("parameters")
     if (action == "yahooWeatherForcast"):
         res = weatherActions.weatherAction(
             contextParameters.get("address"),
@@ -93,14 +93,12 @@ def getTimeAction():
     #returns current time in central US timezone
     now = datetime.datetime.now(pytz.timezone("US/Central"))
     stringTime = now.strftime("%I:%M%p")
-    return ({ "speech": ("It is " + stringTime + "."),
-                "displayText": ("It is " + stringTime + "."),
+    return ({ "fulfillmentText": ("It is " + stringTime + "."),
                 "source": "pytime" })
 
 def timer(amount, unit):
     #set timer -->under construction
-    return { "speech": "Timer set.",
-             "displayText": "Timer set.",
+    return { "fulfillmentText": "Timer set.",
              "source": ("android;timer;" + str(amount) + ";" + unit) }
 
 def search(query):
@@ -113,34 +111,29 @@ def search(query):
     if(response["abstract"] != ""):
         result = (response["abstract"])
     randomText = random.choice(RANDOM_WEBSEARCH)
-    return { "speech": randomText[0] + query + ": " + result,
-             "displayText": randomText[0] + query + ": " + result,
+    return { "fulfillmentText": randomText[0] + query + ": " + result,
              "source": "webSearch" }
 
 def reminderAdd(datetime, reminder):
     #add reminder -->under construction
     randomText = random.choice(RANDOM_REMINDER_SET)
-    return { "speech": randomText[0] + datetime + randomText[1],
-             "displayText": randomText[0] + datetime + randomText[1],
+    return { "fulfillmentText": randomText[0] + datetime + randomText[1],
              "source": "android;addReminder;" + str(datetime) + ";" + reminder }
 
 def alarmSet(name, time, date, recurrence):
     #set alarm -->under construction
-    return { "speech": "Unable to set alarm.",
-             "displayText": "Unable to set alarm.",
+    return { "fulfillmentText": "Unable to set alarm.",
              "source": "android;setAlarm;" + name + ";" + time + ";"
                                            + date + ";" + recurrence }
 
 def alarmRemove(time, date, removeAll):
     #remove alarm -->under construction
-    return { "speech": "Unable to remove alarm.",
-             "displayText": "Unable to remove alarm.",
+    return { "fulfillmentText": "Unable to remove alarm.",
              "source": "android;removeAlarm;" + time + ";" + date + ";" + removeAll }
 
 def wakeup():
     #should always return this if webhook is functioning properly
-    return { "speech": "The server is already awake.",
-             "displayText": "The server is already awake.",
+    return { "fulfillmentText": "The server is already awake.",
              "source": "heroku" }
 
 

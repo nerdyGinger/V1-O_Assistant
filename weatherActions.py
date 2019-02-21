@@ -22,8 +22,7 @@ def weatherAction(city, date):
             text = (randomText[0] + city + randomText[1] + convDate[:-5] +
                     randomText[2] + i.get("text") + randomText[3] +
                     i.get("high") + randomText[4])
-    return { "speech": text,
-             "displayText": text,
+    return { "fulfillmentText": text,
              "source": "yahooWeather" }
 
 def weatherTemperature(city, temp, date):
@@ -64,8 +63,7 @@ def weatherTemperature(city, temp, date):
                 randomText = random.choice(RANDOM_TEMP)
                 text = (randomText[0] + convDate[:-5] + randomText[1] +
                         str(i.get("high")) + randomText[2])
-    return { "speech": text,
-         "displayText": text,
+    return { "fulfillmentText": text,
          "source": "yahooWeather" }
 
 def weatherOutfit(city, date, outfit):
@@ -109,8 +107,7 @@ def sunrise():
     container = v1o_webhook.yahooWeather(
                             {'location': 'sioux falls,sd', 'format': 'json'})
     sub = container.get("current_observation").get("astronomy").get("sunrise")
-    return { "speech": ("Sunrise today is at " + sub + "."),
-             "displayText": ("Sunrise today is at " + sub + "."),
+    return { "fulfillmentText": ("Sunrise today is at " + sub + "."),
              "source": "yahooWeather" }
 
 def sunset():
@@ -118,6 +115,5 @@ def sunset():
     container = v1o_webhook.yahooWeather(
                             {'location': 'sioux falls,sd', 'format': 'json'})
     sub = container.get("current_observation").get("astronomy").get("sunset")
-    return { "speech": ("Sunset today is at " + sub + "."),
-             "displayText": ("Sunset today is at " + sub + "."),
+    return { "fulfillmentText": ("Sunset today is at " + sub + "."),
              "source": "yahooWeather" }
