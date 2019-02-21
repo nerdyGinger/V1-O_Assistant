@@ -11,10 +11,9 @@ from constants import *
 def weatherAction(city, date):
     #gets simple weather forecast data based on city and date
     convDate = v1o_webhook.convertDate(date)
-    yql_query = ("select item from weather.forecast where woeid in " +
-        "(select woeid from geo.places(1) where text='" + city + "')")
-    container = v1o_webhook.yahooWeather(yql_query)
-    sub = container.get("channel").get("item").get("forecast")
+    container = v1o_webhook.yahooWeather(
+                            {'location': city, 'format': 'json'})
+    sub = container.get("forecasts")
     forecast = "unknown"
     text = "Unable to find data."
     for i in sub:
@@ -33,10 +32,9 @@ def weatherTemperature(city, temp, date):
     try:
         tempRange = TEMPS.get(temp).split(";")
         convDate = v1o_webhook.convertDate(date)
-        yql_query = ("select item from weather.forecast where woeid in " +
-            "(select woeid from geo.places(1) where text='" + city + "')")
-        container = v1o_webhook.yahooWeather(yql_query)
-        sub = container.get("channel").get("item").get("forecast")
+        container = v1o_webhook.yahooWeather(
+                                {'location': city, 'format': 'json'})
+        sub = container.get("forecasts")
         forecast = "unknown"
         for i in sub:
             if (i.get("date") == convDate):
@@ -57,9 +55,8 @@ def weatherTemperature(city, temp, date):
                             + randomText[3])
     except:
         convDate = v1o_webhook.convertDate(date)
-        yql_query = ("select item from weather.forecast where woeid in " +
-            "(select woeid from geo.places(1) where text='" + city + "')")
-        container = v1o_webhook.yahooWeather(yql_query)
+        container = v1o_webhook.yahooWeather(
+                                {'location': city, 'format': 'json'})
         sub = container.get("channel").get("item").get("forecast")
         forecast = "unknown"
         for i in sub:
@@ -83,10 +80,9 @@ def weatherOutfit(city, date, outfit):
     elif (outfit in OUTFIT_CONDITIONS.keys()):
         conditions = CONDITIONS.get(
                      OUTFIT_CONDITIONS.get(outfit)).split(";")
-        yql_query = ("select item from weather.forecast where woeid in " +
-                     "(select woeid from geo.places(1) where text='" + city + "')")
-        container = v1o_webhook.yahooWeather(yql_query)
-        sub = container.get("channel").get("item").get("forecast")
+        container = v1o_webhook.yahooWeather(
+                                {'location': city, 'format': 'json'})
+        sub = container.get("forecasts")
         for i in sub:
             if (i.get("date") == convDate):
                 for j in conditions:
@@ -110,18 +106,18 @@ def weatherOutfit(city, date, outfit):
 
 def sunrise():
     #returns time of sunrise on current date
-    yql_query = "select astronomy.sunrise from weather.forecast where woeid=12782768"
-    container = v1o_webhook.yahooWeather(yql_query)
-    sub = container.get("channel").get("astronomy").get("sunrise")
+    container = v1o_webhook.yahooWeather(
+                            {'location': 'sioux falls,sd', 'format': 'json'})
+    sub = container.get("current_observation").get("astronomy").get("sunrise")
     return { "speech": ("Sunrise today is at " + sub + "."),
              "displayText": ("Sunrise today is at " + sub + "."),
              "source": "yahooWeather" }
 
 def sunset():
     #returns time of sunset on current date
-    yql_query = "select astronomy.sunset from weather.forecast where woeid=12782768"
-    container = v1o_webhook.yahooWeather(yql_query)
-    sub = container.get("channel").get("astronomy").get("sunset")
+    container = v1o_webhook.yahooWeather(
+                            {'location': 'sioux falls,sd', 'format': 'json'})
+    sub = container.get("current_observation").get("astronomy").get("sunset")
     return { "speech": ("Sunset today is at " + sub + "."),
              "displayText": ("Sunset today is at " + sub + "."),
              "source": "yahooWeather" }

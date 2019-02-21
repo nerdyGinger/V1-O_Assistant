@@ -10,8 +10,9 @@ and duckduckgoApi.
 
 import urllib, urllib.request, json, datetime, random, requests, requests.auth
 import json, os, pytz, weatherActions, duckduckpy, requests, threading
-import uuid, time
+import uuid, time, hmac, hashlib
 from flask import Flask, request, make_response
+from base64 import b64encode
 from constants import *
 
 
@@ -147,24 +148,6 @@ def wakeup():
 #-----------------------------------------------------------------------
 #--- Helper functions ---
 
-def yahooWeather(query):
-    #formats query for yahooWeather API call and returns results as json
-    yql_url = BASE_URL + "?location=minneapolis,mn&format=json"
-    
-    #-----Yahoo updated its api to need oauth-----
-    headers = { 'Host' : 'weather-ydn-yql.media.yahoo.com',
-                'Yahoo-App-Id' : YAHOO_APP_ID,
-                'Authorization' : 'OAuth' }
-    parameters = { 'oauth_consumer_key' : YAHOO_CLIENT_ID,
-                   'oauth_signature_method' : 'HMAC-SHA1',
-                   'oauth_timestamp' : datetime.datetime.now(pytz.timezone("US/Central")),
-                   'oauth_version' : '1.0', }
-    #-----In progress-----------------------------
-    
-    result = urllib.request.urlopen(yql_url).read()
-    data = json.loads(result)
-    return data['forecasts']
-
 def convertDate(agentDate):
     #converts date from agent to yahoo-friendly format
     try:
@@ -186,13 +169,14 @@ def pingDyno():
 #--- Test function ---
 
 def test():
+    print("we all good")
 
 #-----------------------------------------------------------------------
 #--- Run main ---
 
 if __name__ == '__main__':
-    test()
-    """
+    #test()
+    #"""
     port = int(os.getenv('PORT', 5000))
     pingThread = threading.Thread(target=pingDyno)
     pingThread.start()
