@@ -6,13 +6,13 @@ Contains:
 basic weather, temperature, weather/outfit, sunrise, and sunset actions.
 """
 import pytz, datetime, v1o_webhook, random
+from yahooQuery import yahooQuery
 from constants import *
 
 def weatherAction(city, date):
     #gets simple weather forecast data based on city and date
     convDate = v1o_webhook.convertDate(date)
-    container = v1o_webhook.yahooWeather(
-                            {'location': city, 'format': 'json'})
+    container = yahooQuery({'location': city, 'format': 'json'})
     sub = container.get("forecasts")
     forecast = "unknown"
     text = "Unable to find data."
@@ -31,8 +31,7 @@ def weatherTemperature(city, temp, date):
     try:
         tempRange = TEMPS.get(temp).split(";")
         convDate = v1o_webhook.convertDate(date)
-        container = v1o_webhook.yahooWeather(
-                                {'location': city, 'format': 'json'})
+        container = yahooQuery({'location': city, 'format': 'json'})
         sub = container.get("forecasts")
         forecast = "unknown"
         for i in sub:
@@ -54,8 +53,7 @@ def weatherTemperature(city, temp, date):
                             + randomText[3])
     except:
         convDate = v1o_webhook.convertDate(date)
-        container = v1o_webhook.yahooWeather(
-                                {'location': city, 'format': 'json'})
+        container = yahooQuery({'location': city, 'format': 'json'})
         sub = container.get("channel").get("item").get("forecast")
         forecast = "unknown"
         for i in sub:
@@ -78,8 +76,7 @@ def weatherOutfit(city, date, outfit):
     elif (outfit in OUTFIT_CONDITIONS.keys()):
         conditions = CONDITIONS.get(
                      OUTFIT_CONDITIONS.get(outfit)).split(";")
-        container = v1o_webhook.yahooWeather(
-                                {'location': city, 'format': 'json'})
+        container = yahooQuery({'location': city, 'format': 'json'})
         sub = container.get("forecasts")
         for i in sub:
             if (i.get("date") == convDate):
@@ -104,16 +101,14 @@ def weatherOutfit(city, date, outfit):
 
 def sunrise():
     #returns time of sunrise on current date
-    container = v1o_webhook.yahooWeather(
-                            {'location': 'sioux falls,sd', 'format': 'json'})
+    container = yahooQuery({'location': 'sioux falls,sd', 'format': 'json'})
     sub = container.get("current_observation").get("astronomy").get("sunrise")
     return { "fulfillmentText": ("Sunrise today is at " + sub + "."),
              "source": "yahooWeather" }
 
 def sunset():
     #returns time of sunset on current date
-    container = v1o_webhook.yahooWeather(
-                            {'location': 'sioux falls,sd', 'format': 'json'})
+    container = yahooQuery({'location': 'sioux falls,sd', 'format': 'json'})
     sub = container.get("current_observation").get("astronomy").get("sunset")
     return { "fulfillmentText": ("Sunset today is at " + sub + "."),
              "source": "yahooWeather" }

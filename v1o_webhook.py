@@ -79,9 +79,7 @@ def processRequest(req):
     elif (action == "wakeup"):
         res = wakeup()
     else:
-        return { "speech": ("This request is unknown to me. I have logged this " +
-                            "interaction for further development."),
-                 "displayText": ("This request is unknown to me. I have logged this" +
+        return { "fulfillmentText": ("This request is unknown to me. I have logged this" +
                                  " interaction for further development."),
                  "source": "unknownCommand" }
     return res

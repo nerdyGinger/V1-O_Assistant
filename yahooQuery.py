@@ -35,9 +35,9 @@ def yahooQuery(query):
     request.add_header('Authorization', authHeader)
     request.add_header('Yahoo-App-Id', YAHOO_APP_ID)
     response = urllib.request.urlopen(request).read()
-    print(response)
+    return(response)
 
 #test method call
-yahooQuery({'location': 'sioux falls', 'format': 'json'})
+print(yahooQuery({'location': 'sioux falls', 'format': 'json'}))
 
                   
