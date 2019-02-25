@@ -34,7 +34,7 @@ import os, psycopg2, urllib.parse
 #from secrets import *
 
 def recipeQuery(recipeName):
-    connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+    connection = psycopg2.connect(os.environ.get(DATABASE_URL), sslmode='require')
     recipe = "['No recipe found']"
 
     try:
