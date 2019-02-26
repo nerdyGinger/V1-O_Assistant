@@ -50,7 +50,7 @@ def ingredients(data):
 
 def recipeQuery(recipeName):
     connection = psycopg2.connect(DATABASE_URL, sslmode='require')
-    recipe = "['No recipe found']"
+    recipe = ["'No recipe found'"]
 
     try:
         cursor = connection.cursor()
