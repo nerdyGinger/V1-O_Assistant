@@ -49,7 +49,7 @@ def ingredients(data):
              "source": "recipeDatabase" }
 
 def recipeQuery(recipeName):
-    connection = psycopg2.connect(os.getenv(DATABASE_URL), sslmode='require')
+    connection = psycopg2.connect(os.getenv(RECIPE_URL), sslmode='require')
     recipe = "['No recipe found']"
 
     try:
