@@ -55,7 +55,7 @@ def nextStep(data, contexts, index):
                  {"name": contexts[0].get("name"),
                  "lifespanCount": 5,
                  "parameters": {
-                     "count": str(int(contexts[0].get("parameters").get("count"))+1)
+                     "count": str(int(index)+1)
                      }}]}
 
 def repeatStep(data, index):
@@ -74,7 +74,7 @@ def prevStep(data, contexts, index):
                  {"name": contexts[0].get("name"),
                  "lifespanCount": 5,
                  "parameters": {
-                     "count": str(int(contexts[0].get("parameters").get("count"))-1)
+                     "count": str(int(index)-1)
                      }}]}
 
 def ingredients(data):
