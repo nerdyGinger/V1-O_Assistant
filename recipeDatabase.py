@@ -35,7 +35,7 @@ from constants import *
 
 def recipeResponse(data):
     if data == "No recipe found.":
-        return { "fullfillmentText": data,
+        return { "fulfillmentText": data,
                  "source": "recipeDatabase" }
     return { "fulfillmentText": ("I found the recipe for " + data[0] +
                                  ". " + str(data[1]) +
