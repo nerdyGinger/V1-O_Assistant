@@ -55,7 +55,7 @@ def processRequest(req):
             contextParameters.get("date-time"),
             contextParameters.get("outfit"))
     elif (action == "recipe.query"):
-        res = recepeResponse(recipeQuery(contextParameters.get("recipeName")))
+        res = recipeResponse(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "recipequery.next"):
         res = nextStep(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "recipequery.ingredients"):
