@@ -61,8 +61,7 @@ def recipeQuery(recipeName):
         print("Issue querying database!")
     finally:
         connection.close()
-        print(recipe)
-        return recipe
+        return recipe[0]
         
 #test
 #print(recipeQuery("pb and J"))
