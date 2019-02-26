@@ -44,11 +44,14 @@ def recipeResponse(data):
              "source": "recipeDatabase" }
 
 def nextStep(data, contexts, index):
+    if int(index) > data[5].size():
+        return { "fulfillmentText": "There are no more steps.",
+                 "source": "recipeDatabase" }
     return { "fulfillmentText": data[5][int(index)],
              "source": "recipeDatabase",
              "outputContexts": [
                  {"name": contexts[0].get("name"),
-                 "lifespanCount": contexts[0].get("name"),
+                 "lifespanCount": int(contexts[0].get("name")),
                  "parameters": {
                      "count": str(int(contexts[0].get("parameters").get("count"))+1)
                      }}]}
