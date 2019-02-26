@@ -47,6 +47,8 @@ def nextStep(data, contexts, index):
     if int(index) == len(data[5]):
         return { "fulfillmentText": "There are no more steps.",
                  "source": "recipeDatabase" }
+    elif int(index) < 0:
+        index = 0
     return { "fulfillmentText": data[5][int(index)],
              "source": "recipeDatabase",
              "outputContexts": [
@@ -56,6 +58,25 @@ def nextStep(data, contexts, index):
                      "count": str(int(contexts[0].get("parameters").get("count"))+1)
                      }}]}
 
+def repeatStep(data, index):
+    if int(index) < 0:
+        index = 0
+    return { "fulfillmentText": data[5][int(index)],
+             "source": "recipeDatabase" }
+
+def prevStep(data, contexts, index):
+    if int(index) < 0:
+        return { "fulfillmentText": "There are no previous steps.",
+                 "source": "recipeDatabase" }
+    return { "fulfillmentText": data[5][int(index)],
+             "source": "recipeDatabase",
+             "outputContexts": [
+                 {"name": contexts[0].get("name"),
+                 "lifespanCount": int(contexts[0].get("lifespanCount")),
+                 "parameters": {
+                     "count": str(int(contexts[0].get("parameters").get("count"))-1)
+                     }}]}
+
 def ingredients(data):
     return { "fulfillmentText": str(data[4]),
              "source": "recipeDatabase" }
@@ -63,6 +84,7 @@ def ingredients(data):
 def recipeQuery(recipeName):
     connection = psycopg2.connect(DATABASE_URL, sslmode='require')
     recipe = ["No recipe found"]
+    recipeName = recipeName.replace("&", " and ")
 
     try:
         cursor = connection.cursor()

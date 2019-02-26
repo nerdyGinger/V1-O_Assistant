@@ -60,6 +60,13 @@ def processRequest(req):
         res = nextStep(recipeQuery(contextParameters.get("recipeName")),
                        req.get("queryResult").get("outputContexts"),
                        contextParameters.get("count"))
+    elif (action == "recipequery.previous"):
+        res = prevStep(recipeQuery(contextParameters.get("recipeName")),
+                       req.get("queryResult").get("outputContexts"),
+                       contextParameters.get("count"))
+    elif (action == "recipequery.repeat"):
+        res = repeatStep(recipeQuery(contextParameters.get("recipeName")),
+                         contextParameters.get("count"))
     elif (action == "recipequery.ingredients"):
         res = ingredients(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "setTimer"):
