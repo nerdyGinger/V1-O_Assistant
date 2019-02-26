@@ -53,6 +53,7 @@ def nextStep(data, contexts, index):
              "source": "recipeDatabase",
              "outputContexts": [
                  {"name": contexts[0].get("name"),
+                 "lifespanCount": 5,
                  "parameters": {
                      "count": str(int(contexts[0].get("parameters").get("count"))+1)
                      }}]}
@@ -71,6 +72,7 @@ def prevStep(data, contexts, index):
              "source": "recipeDatabase",
              "outputContexts": [
                  {"name": contexts[0].get("name"),
+                 "lifespanCount": 5,
                  "parameters": {
                      "count": str(int(contexts[0].get("parameters").get("count"))-1)
                      }}]}
