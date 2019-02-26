@@ -34,7 +34,7 @@ import os, psycopg2, urllib.parse
 #from secrets import *
 
 def recipeResponse(data):
-    return { "fulfillmentText": ("I found the recipe for " + data[0]
+    return { "fulfillmentText": ("I found the recipe for " + data[0] +
                                  ". " + data[1] +
                                  "It takes " + data[2] + " to prepare " +
                                  "and makes " + data[3] + ". "),
