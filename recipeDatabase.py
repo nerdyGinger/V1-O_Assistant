@@ -47,7 +47,9 @@ def nextStep(data, contexts, index):
     return { "fulfillmentText": data[5][int(index)],
              "source": "recipeDatabase",
              "outputContexts": [
-                 {"parameters": {
+                 {"name": contexts[0].get("name"),
+                 "lifespanCount": contexts[0].get("name"),
+                 "parameters": {
                      "count": str(int(contexts[0].get("parameters").get("count"))+1)
                      }}]}
 
