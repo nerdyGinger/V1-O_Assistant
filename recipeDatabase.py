@@ -30,7 +30,7 @@ cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingr
                             );''')
 """
 
-import os, psycopg2, urllib.parse
+import psycopg2, urllib.parse
 #from secrets import *
 
 def recipeResponse(data):
@@ -48,8 +48,8 @@ def ingredients(data):
     return { "fulfillmentText": str(data[4]),
              "source": "recipeDatabase" }
 
-def recipeQuery(recipeName):
-    connection = psycopg2.connect(os.environ.get(RECIPE_URL), sslmode='require')
+def recipeQuery(recipeName, url):
+    connection = psycopg2.connect(url, sslmode='require')
     recipe = "['No recipe found']"
 
     try:
