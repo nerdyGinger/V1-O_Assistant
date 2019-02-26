@@ -36,7 +36,7 @@ from constants import *
 def recipeResponse(data):
     return { "fulfillmentText": ("I found the recipe for " + data[0] +
                                  ". " + str(data[1]) +
-                                 "It takes " + str(data[2]) + " to prepare " +
+                                 " It takes " + str(data[2]) + " to prepare " +
                                  "and makes " + str(data[3]) + ". "),
              "source": "recipeDatabase" }
 
@@ -61,6 +61,7 @@ def recipeQuery(recipeName):
         print("Issue querying database!")
     finally:
         connection.close()
+        print(recipe)
         return recipe
         
 #test
