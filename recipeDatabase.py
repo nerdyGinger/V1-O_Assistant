@@ -33,6 +33,21 @@ cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingr
 import os, psycopg2, urllib.parse
 #from secrets import *
 
+def recipeResponse(data):
+    return { "fulfillmentText": ("I found the recipe for " + data[0]
+                                 ". " + data[1] +
+                                 "It takes " + data[2] + " to prepare " +
+                                 "and makes " + data[3] + ". "),
+             "source": "recipeDatabase" }
+
+def nextStep(data):
+    return { "fulfillmentText": data[5][0],
+             "source": "recipeDatabase" }
+
+def ingredients(data):
+    return { "fulfillmentText": str(data[4]),
+             "source": "recipeDatabase" }
+
 def recipeQuery(recipeName):
     connection = psycopg2.connect(os.environ.get(DATABASE_URL), sslmode='require')
     recipe = "['No recipe found']"

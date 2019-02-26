@@ -13,6 +13,7 @@ import json, os, pytz, weatherActions, duckduckpy, requests, threading
 import uuid, time, hmac, hashlib
 from flask import Flask, request, make_response
 from base64 import b64encode
+from recipeDatabase import *
 from constants import *
 
 
@@ -53,6 +54,12 @@ def processRequest(req):
             contextParameters.get("address"),
             contextParameters.get("date-time"),
             contextParameters.get("outfit"))
+    elif (action == "recipe.query"):
+        res = recepeResponse(recipeQuery(contextParameters.get("recipeName")))
+    elif (action == "recipequery.next"):
+        res = nextStep(recipeQuery(contextParameters.get("recipeName")))
+    elif (action == "recipequery.ingredients"):
+        res = ingredients(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "setTimer"):
         res = timer(parameters.get("duration").get("amount"),
                     parameters.get("duration").get("unit"))
