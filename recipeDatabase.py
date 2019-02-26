@@ -43,9 +43,15 @@ def recipeResponse(data):
                                  "and makes " + str(data[3]) + ". "),
              "source": "recipeDatabase" }
 
-def nextStep(data):
-    return { "fulfillmentText": data[5][0],
-             "source": "recipeDatabase" }
+def nextStep(data, contexts, index):
+    return { "fulfillmentText": data[5][int(index)],
+             "source": "recipeDatabase",
+             "outputContexts": [
+                 "name": contexts[0].get("name"),
+                 "lifespanCount": contexts[0].get("name"),
+                 "parameters": str(int(contexts[0].get("parameters").get("count"))+1)
+                 ]
+                 }
 
 def ingredients(data):
     return { "fulfillmentText": str(data[4]),
