@@ -44,6 +44,9 @@ def recipeResponse(data):
              "source": "recipeDatabase" }
 
 def nextStep(data, contexts, index):
+    life = contexts[0].get("lifespanCount")
+    if life == None:
+        life = 5
     if int(index) == len(data[5]):
         return { "fulfillmentText": "There are no more steps.",
                  "source": "recipeDatabase" }
@@ -53,7 +56,7 @@ def nextStep(data, contexts, index):
              "source": "recipeDatabase",
              "outputContexts": [
                  {"name": contexts[0].get("name"),
-                 "lifespanCount": 5,
+                 "lifespanCount": life,
                  "parameters": {
                      "count": str(int(index)+1)
                      }}]}
@@ -65,6 +68,9 @@ def repeatStep(data, index):
              "source": "recipeDatabase" }
 
 def prevStep(data, contexts, index):
+    life = contexts[0].get("lifespanCount")
+    if life == None:
+        life = 5
     if int(index) < 0:
         return { "fulfillmentText": "There are no previous steps.",
                  "source": "recipeDatabase" }
@@ -72,7 +78,7 @@ def prevStep(data, contexts, index):
              "source": "recipeDatabase",
              "outputContexts": [
                  {"name": contexts[0].get("name"),
-                 "lifespanCount": 5,
+                 "lifespanCount": life,
                  "parameters": {
                      "count": str(int(index)-1)
                      }}]}
