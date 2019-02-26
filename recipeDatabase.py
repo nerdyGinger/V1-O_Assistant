@@ -44,7 +44,7 @@ def recipeResponse(data):
              "source": "recipeDatabase" }
 
 def nextStep(data, contexts, index):
-    if int(index) > len(data[5]):
+    if int(index) == len(data[5]):
         return { "fulfillmentText": "There are no more steps.",
                  "source": "recipeDatabase" }
     return { "fulfillmentText": data[5][int(index)],
