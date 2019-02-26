@@ -34,6 +34,9 @@ import os, psycopg2, urllib.parse
 from constants import *
 
 def recipeResponse(data):
+    if data == "No recipe found.":
+        return { "fullfillmentText": data,
+                 "source": "recipeDatabase" }
     return { "fulfillmentText": ("I found the recipe for " + data[0] +
                                  ". " + str(data[1]) +
                                  " It takes " + str(data[2]) + " to prepare " +
@@ -50,7 +53,7 @@ def ingredients(data):
 
 def recipeQuery(recipeName):
     connection = psycopg2.connect(DATABASE_URL, sslmode='require')
-    recipe = ["'No recipe found'"]
+    recipe = ["No recipe found"]
 
     try:
         cursor = connection.cursor()
@@ -61,6 +64,8 @@ def recipeQuery(recipeName):
         print("Issue querying database!")
     finally:
         connection.close()
+        if recipe == []:
+            return "No recipe found."
         return recipe[0]
         
 #test
