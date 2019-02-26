@@ -55,14 +55,11 @@ def processRequest(req):
             contextParameters.get("date-time"),
             contextParameters.get("outfit"))
     elif (action == "recipe.query"):
-        res = recipeResponse(recipeQuery(contextParameters.get("recipeName"),
-                                         os.environ.get(RECIPE_URL)))
+        res = recipeResponse(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "recipequery.next"):
-        res = nextStep(recipeQuery(contextParameters.get("recipeName"),
-                                         os.environ.get(RECIPE_URL)))
+        res = nextStep(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "recipequery.ingredients"):
-        res = ingredients(recipeQuery(contextParameters.get("recipeName"),
-                                         os.environ.get(RECIPE_URL)))
+        res = ingredients(recipeQuery(contextParameters.get("recipeName")))
     elif (action == "setTimer"):
         res = timer(parameters.get("duration").get("amount"),
                     parameters.get("duration").get("unit"))
