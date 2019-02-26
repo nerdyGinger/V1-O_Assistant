@@ -59,11 +59,11 @@ def processRequest(req):
     elif (action == "recipequery.next"):
         res = nextStep(recipeQuery(contextParameters.get("recipeName")),
                        req.get("queryResult").get("outputContexts"),
-                       req.get("queryResult").get("outputContexts")[0].get("count"))
+                       req.get("queryResult").get("outputContexts")[0].get("parameters").get("count"))
     elif (action == "recipequery.previous"):
         res = prevStep(recipeQuery(contextParameters.get("recipeName")),
                        req.get("queryResult").get("outputContexts"),
-                       req.get("queryResult").get("outputContexts")[0].get("count"))
+                       req.get("queryResult").get("outputContexts")[0].get("parameters").get("count"))
     elif (action == "recipequery.repeat"):
         res = repeatStep(recipeQuery(contextParameters.get("recipeName")),
                          contextParameters.get("count"))
