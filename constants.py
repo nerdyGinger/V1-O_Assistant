@@ -7,10 +7,14 @@ and looked down tight for deployment)
 """
 
 #-------------------------------------------------------------------------------
+# --- URLs ---
 
 DATABASE_URL = 'postgres://axlyomrdaqaswv:e11d7639f2225c11a0da95e26f7259ca219e3a40fa47fb76bddf031204dda2d1@ec2-54-243-128-95.compute-1.amazonaws.com:5432/d8b9hl8vmdved7'
 
 BASE_URL = "https://weather-ydn-yql.media.yahoo.com/forecastrss?"
+
+#-------------------------------------------------------------------------------
+# --- Weather ---
 
 MONTHS = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "June",
           "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec" }
