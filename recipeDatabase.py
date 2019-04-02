@@ -231,6 +231,6 @@ def recipeQuery(recipeName):
         return recipe[0]
         
 #test
-print(recipeQuery("Slow Cooker Italian Chicken For 1"))
+#print(recipeQuery("Slow Cooker Italian Chicken For 1"))
 #input("Continue? ")
 #print("Done!")
