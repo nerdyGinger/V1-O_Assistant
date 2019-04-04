@@ -1,0 +1,148 @@
+Table and recipies initialized in the Heroku Postgre-sql recipes database.
+
+cursor.execute('''CREATE TABLE recipies
+                (id SERIAL PRIMARY KEY NOT NULL,
+                name             TEXT  NOT NULL,
+                description      TEXT          ,
+                preptime         TEXT  NOT NULL,
+                yield            TEXT  NOT NULL,
+                ingredients    TEXT[]  NOT NULL,
+                directions     TEXT[]  NOT NULL);''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'PB and J',
+                            'A simple peanut butter and jelly sandwich.',
+                            '5 min',
+                            '1 sandwich',
+                            ARRAY ['2 slices bread",
+                                    "2 tbs peanut butter",
+                                    "1 tbs jelly'],
+                            ARRAY ['Spread the peanut butter on one slice of bread.',
+                                    'Spread jelly on top of the peanut butter.',
+                                    'Place other slice of bread on top.',
+                                    'Enjoy!']
+                            );''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'Amish Friendship Bread Starter',
+                            'The starter for the classic Amish Friendship Bread! This bread can be shared with friends or saved for later. Recipe from crazyforcrust.com',
+                            '10 days',
+                            '4 cups starter',
+                            ARRAY ['1 package or 2 1/4 tsp active dry yeast',
+                                    '1/4 cup warm water (110F)',
+                                    '1 cup granulated sugar',
+                                    '1 cup all-purpose flour',
+                                    '1 cup milk',
+                                    '2 cups granulated sugar (divided)',
+                                    '2 cups all-purpose flour (divided)',
+                                    '2 cups milk (divided)'],
+                            ARRAY ['Day 1: Stir yeast into warm water. Let sit for 10 minutes.',
+                                    'Day 1: Whisk sugar and flour in a 2 Qt container (or ziploc bag). Whisk in milk. Be sure to stir the corners - the flour will get clumpy and sticky if you are not careful.',
+                                    'Day 1: Stir the yeast mixture into the flour mixture. Cover loosely and store on the counter.',
+                                    'Day 2 - 4: Stir the mixture once per day.',
+                                    'Day 5: Stir 1 cup each sugar, flour, and milk into the starter. Cover loosely and store on the counter.',
+                                    'Day 6 - 9: Stir the mixture once per day.',
+                                    'Day 10: Stir 1 cup each sugar, flour, and milk into the starter. Cover loosely and store on counter.',
+                                    'Day 10: Remove 1 cup starter to use in the Amish Friendship Bread Recipe. Remove 2 cups of starter and give 1 cup each to two friends, with the Amish Friendship Bread Recipe attached.',
+                                    'Day 10: There will be 1 cup of remaining starter. You can give this to a third friend, or you can seal and freeze this 1 cup to use in the future. Or, continue the cycle of friendship and start with Day 2 directions tomorrow.']
+                            );''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'Amish Friendship Bread',
+                            'How to cook up a batch of delicious Amish Friendship Bread. Recipe from crazyforcrust.com',
+                            '45-50 min',
+                            '2 loaves',
+                            ARRAY ['1 cup Amish Friendship Bread Starter',
+                                    '1 1/4 tsp baking powder',
+                                    '1 tsp baking soda',
+                                    '1/2 tsp salt',
+                                    '2 tsp cinnamon (divided)',
+                                    '2 cups flour',
+                                    '2/3 cup oil',
+                                    '1 cup + 4 tsp sugar',
+                                    '3 eggs',
+                                    '1 tsp vanilla',
+                                    'Optional: 1 cup chocolate chips or chopped nuts'],
+                            ARRAY ['Preheat oven to 325F. Grease two 4x8 or 9x5 loaf pans with butter or shortening. Sprinkle a bit of sugar in the pan (like you would flour a pan). Alternately, spray with cooking spray, but do not sugar the pans if using cooking spray.',
+                                    'Whisk baking soda, baking powder, salt, 1 tsp cinnamon, and flour in a medium bowl. Set aside.',
+                                    'Stir starter, oil, and 1 cup sugar with a wooden spoon or spatula. Stir in eggs, 1 at a time, then stir in vanilla. Gently fold in dry ingredients. Stir in chocolate chips or nuts, if using.',
+                                    'Divide batter between two loaf pans. Mix remaining 4 tsps sugar and 1 tsp cinnamon. Sprinkle on top of loaves.',
+                                    'Bake for 25-35 min, until a toothpick comes out clean. Cool before removing from pan.',
+                                    'Enjoy!']
+                            );''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'Potato Skillet',
+                            'Recipe by LaDonna on allrecipes.com.',
+                            '30 min',
+                            '1 serving',
+                            ARRAY ['2 slices bacon',
+                                    '1 peeled and diced potato',
+                                    'Pinch of garlic salt',
+                                    'Pinch of seasoning salt',
+                                    'Pinch of black pepper',
+                                    '2 eggs, beaten',
+                                    '1/8 cup shredded Cheddar cheese'],
+                            ARRAY ['Place bacon in a large, deep skillet.',
+                                    'Cook over medium-high heat until evenly brown.',
+                                    'Remove bacon slices, reserving grease. Crumble bacon and set aside.',
+                                    'Add potatoes to bacon grease and season with garlic salt, seasoned salt, and black pepper.',
+                                    'Cook until potatoes are soft.',
+                                    'When potatoes are tender, add crumbled bacon. Pour eggs over potatoes and cook until firm.',
+                                    'Spread with cheese and cover with lid until melted.']
+                            );''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'Spinach Quiche For One',
+                                'A crustless spinach quiche that is the perfect size for one person. Recipe by Joaanie Zisk on onedishkitchen.com.',
+                                '35 min',
+                                '1 serving',
+                                ARRAY ['1/2 Tbs olive oil',
+                                        '1/2 cup chopped onions',
+                                        '1 clove garlic (minced)',
+                                        '1/2 cup cubed ham',
+                                        '1 cup baby spinach (loosely packed)',
+                                        '2 large eggs',
+                                        '3 Tbs heavy cream',
+                                        '1/4 tsp kosher salt',
+                                        '1/8 tsp black pepper',
+                                        '1/2 cup cubed swiss cheese'],
+                                ARRAY ['Heat oven to 375F.',
+                                        'Heat a medium-sized skillet on medium-high heat. Add the olive oil and swirl evenly to coat pan.',
+                                        'Add the chopped onions and minced garlic to the pan; cook, stirring occasionally, until onions are translucent, about 5 min.',
+                                        'Add the cubed ham to the pan and cook, stirring occasionally for 1 min. Add the spinach and stir until spinach is beginning to wilt, about 3 min.',
+                                        'Remove pan from heat and set aside.',
+                                        'In a medium-sized mixing bowll, whisk together the eggs, cream, salt, and pepper. Fold in the spinach and ham mixture.',
+                                        'Stir in the cheese and pour into lighlty greased 5-inch baking dish (or dish of similar size).',
+                                        'Bake until quiche is puffed and golden, about 25 min.',
+                                        'Enjoy!']
+                                );''')
+
+cursor.execute('''INSERT INTO recipies (name, description, preptime, yield, ingredients, directions)
+                    VALUES
+                            ( 'Slow Cooker Italian Chicken For One',
+                                'This uses a 1.5 quart slow cooker or crockpot for best results. Recipe by Joanie Zisk on onedishkitchen.com.',
+                                '7 hours',
+                                '1 serving',
+                                ARRAY ['2 boneless, skinless chicken thighs or breasts',
+                                        '2 Tbs olive oil',
+                                        '1 Tbs balsamic vinegar',
+                                        '1/8 tsp kosher salt',
+                                        'Pinch of black pepper',
+                                        '1 cup Marinara sauce or tomato sauce',
+                                        '1/4 tsp dried basil',
+                                        '1/8 tsp dried oregano',
+                                        '1/8 tsp garlic powder'],
+                                ARRAY ['Spray the inside of the slow cooker with an oil spray to prevent sticking.',
+                                        'Place the chicken thighs on the bottom of the slow cooker.',
+                                        'In a small bowl, whisk together the olive oil and the vinegar and pour over the chicken thighs.',
+                                        'Top with the salt and pepper.',
+                                        'Pour the Marinara sauce or tomato sauce over the chicken thighs.',
+                                        'Top with the spices.',
+                                        'Cook on low for 7 hours or high for 4. Serve with pasta, potatoes, or rice.']
+                                );''')
