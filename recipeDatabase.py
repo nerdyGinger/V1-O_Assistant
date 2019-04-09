@@ -67,7 +67,7 @@ def allRecipes():
         lyst = lyst.replace(",), (", ", ")
         lyst = lyst.replace("[(", "")
         lyst = lyst.replace(",)]", "")
-        return { "fulfillmentText": "Here are the recipe I found: " + lyst,
+        return { "fulfillmentText": "Here are the recipes I found: " + lyst,
                  "source": "recipeDatabase" }
 
 def recipeQuery(recipeName):
@@ -96,8 +96,21 @@ def recipeQuery(recipeName):
         if recipe == []:
             return "No recipe found for " + recipeName + "."
         return recipe[0]
+
+def maintenance(param):
+    connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+    try:
+        cursor = connection.cursor()
+        cursor.execute('''SELECT * from recipies;''')
+        connection.commit()
+    except:
+        print("Issue querying database!")
+    finally:
+        connection.close()
+        
         
 #test
+#maintenance(None)
 #print(allRecipes())
 #input("Continue? ")
 #print("Done!")
