@@ -10,7 +10,12 @@ from base64 import b64encode
 from constants import *
 
 #import for testing
-#from secrets import *
+"""from dotenv import load_dotenv
+from os.path import join, dirname
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)"""
+
 
 def yahooQuery(query):    
     oauth = { 'oauth_consumer_key': os.environ.get('YAHOO_CLIENT_ID'),
@@ -23,12 +28,13 @@ def yahooQuery(query):
     paramsSort = [k + '=' + quote(params[k], safe='')
                   for k in sorted(params.keys())]
     
-    signBaseStr = bytes('GET&' + quote(os.environ.get('BASE_URL'), safe='') + '&'
-                  + quote('&'.join(paramsSort), safe=''), 'utf-8')
-    compositeKey = bytes(quote(os.environ.get('YAHOO_CLIENT_SECRET'), safe='') + '&', 'utf-8')
-    oauthSign = b64encode(hmac.new(compositeKey, signBaseStr, hashlib.sha1).digest())
+    signBaseStr = ("GET&" + BASE_URL + "&"
+                  + quote("&".join(paramsSort), safe=""))
+    compositeKey = (quote(os.environ.get('YAHOO_CLIENT_SECRET'), safe="") + "&")
+    oauthSign = b64encode(hmac.new(bytes(compositeKey, 'utf-8'), bytes(signBaseStr, 'utf-8'),
+                                   hashlib.sha1).digest())
     oauth['oauth_signature'] = oauthSign
-    authHeader = 'OAuth ' + ', '.join(['{}="{}"'.format(k,v) for k,v in oauth.items()])
+    authHeader = "OAuth " + ", ".join(['{}="{}"'.format(k,v) for k,v in oauth.items()])
     
     url = BASE_URL + urllib.parse.urlencode(query)
     request = urllib.request.Request(url)

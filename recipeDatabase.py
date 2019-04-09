@@ -53,6 +53,23 @@ def ingredients(data):
     return { "fulfillmentText": str(data[4]),
              "source": "recipeDatabase" }
 
+def allRecipes():
+    connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+    lyst = "No recipes found"
+    try:
+        cursor = connection.cursor()
+        cursor.execute('''SELECT name FROM recipies;''')
+        lyst = str(cursor.fetchall())
+    except:
+        print("Issue querying database!")
+    finally:
+        connection.close()
+        lyst = lyst.replace(",), (", ", ")
+        lyst = lyst.replace("[(", "")
+        lyst = lyst.replace(",)]", "")
+        return { "fulfillmentText": "Here are the recipe I found: " + lyst,
+                 "source": "recipeDatabase" }
+
 def recipeQuery(recipeName):
     connection = psycopg2.connect(DATABASE_URL, sslmode='require')
     recipe = ["No recipe found"]
@@ -72,7 +89,6 @@ def recipeQuery(recipeName):
         cursor.execute('''SELECT name, description, preptime, yield, ingredients, directions FROM recipies
                           WHERE LOWER(name) = LOWER(%s);''', (recipeName,))
         recipe = (cursor.fetchall())
-        connection.commit()
     except:
         print("Issue querying database!")
     finally:
@@ -82,6 +98,6 @@ def recipeQuery(recipeName):
         return recipe[0]
         
 #test
-#print(recipeQuery("Slow Cooker Italian Chicken For 1"))
+#print(allRecipes())
 #input("Continue? ")
 #print("Done!")

@@ -69,6 +69,8 @@ def processRequest(req):
                          contextParameters.get("count"))
     elif (action == "recipequery.ingredients"):
         res = ingredients(recipeQuery(contextParameters.get("recipeName")))
+    elif (action == "recipequery.allRecipes"):
+        res = allRecipies()
     elif (action == "setTimer"):
         res = timer(parameters.get("duration").get("amount"),
                     parameters.get("duration").get("unit"))
