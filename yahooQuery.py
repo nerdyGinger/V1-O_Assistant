@@ -33,7 +33,7 @@ def yahooQuery(query):
     url = BASE_URL + urllib.parse.urlencode(query)
     request = urllib.request.Request(url)
     request.add_header('Authorization', authHeader)
-    request.add_header('Yahoo-App-Id', os.environ.get(YAHOO_APP_ID))
+    request.add_header('X-Yahoo-App-Id', os.environ.get(YAHOO_APP_ID))
     response = urllib.request.urlopen(request).read()
     return(response)
 
